@@ -1,0 +1,88 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/portal-config')">Academic Year</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Academic Year</span>
+        <span *ngIf="action == 'edit'">Edit Academic Year</span>
+        <span *ngIf="action == 'view'">View Academic Year</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create new Academic Year</span>
+        <span *ngIf="action == 'edit'">Edit existing Academic Year</span>
+        <span *ngIf="action == 'view'">View existing Academic Year</span>
+    </div>
+
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create new Academic Year
+        </div>
+        <form [formGroup]="yearForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">From Date</div>
+                <p-calendar formControlName="fromdate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="fromdate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+                <div
+                    *ngIf="yearForm.controls.fromdate.invalid && (yearForm.controls.fromdate.dirty || yearForm.controls.fromdate.touched)">
+                    <div *ngIf="yearForm.controls.fromdate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('fromdate',yearForm.controls.fromdate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">To Date</div>
+                <p-calendar formControlName="todate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="todate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+                <div *ngIf="yearForm.errors?.['dateInvalid'] && yearForm.get('todate')?.touched">
+                    <div *ngIf="yearForm.errors?.['dateInvalid'] && yearForm.get('todate')?.touched"
+                        class="gilroyNormal fontRed s11 mt5">
+                        End date must be greater than Start date
+                    </div>
+                </div>
+                <div
+                    *ngIf="yearForm.controls.todate.invalid && (yearForm.controls.todate.dirty || yearForm.controls.todate.touched)">
+                    <div *ngIf="yearForm.controls.todate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('todate',yearForm.controls.todate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Academic Year Name</div>
+                <input type="text" class="pinputText pinputText300px" pInputText formControlName="name">
+            </div>
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Total Working Days</div>
+                <input type="number" class="pinputText pinputText300px" pInputText formControlName="totalworkingdays">
+                <div
+                    *ngIf="yearForm.controls.totalworkingdays.invalid && (yearForm.controls.totalworkingdays.dirty || yearForm.controls.totalworkingdays.touched)">
+                    <div *ngIf="yearForm.controls.totalworkingdays.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('totalworkingdays',yearForm.controls.totalworkingdays.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!yearForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!yearForm.valid || !showUpdateButton"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('home/portal-config')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

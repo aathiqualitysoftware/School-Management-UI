@@ -1,0 +1,115 @@
+<p-toast position="top-center" key="tc"></p-toast>
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/portal-config')">Quarter</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Quarter</span>
+        <span *ngIf="action == 'edit'">Edit Quarter</span>
+        <span *ngIf="action == 'view'">View Quarter</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create new Quarter</span>
+        <span *ngIf="action == 'edit'">Edit existing Quarter</span>
+        <span *ngIf="action == 'view'">View existing Quarter</span>
+    </div>
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create new Quarter</div>
+        <form [formGroup]="quarterForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Quarter Name</div>
+                <input type="text" class="pinputText pinputText300px" pInputText formControlName="name">
+                <div
+                    *ngIf="quarterForm.controls.name.invalid && (quarterForm.controls.name.dirty || quarterForm.controls.name.touched)">
+                    <div *ngIf="quarterForm.controls.name.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('name',quarterForm.controls.name.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Year</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="years" formControlName="year" optionLabel="name"
+                    filterBy="name" placeholder="Select Year" [filter]="true" [showClear]="true">
+                    <ng-template let-year pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{year.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="quarterForm.controls.year.invalid && (quarterForm.controls.year.dirty || quarterForm.controls.year.touched)">
+                    <div *ngIf="quarterForm.controls.year.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('year',quarterForm.controls.year.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Start Date</div>
+                <p-calendar formControlName="startDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="startDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+                <div
+                    *ngIf="quarterForm.controls.startDate.invalid && (quarterForm.controls.startDate.dirty || quarterForm.controls.startDate.touched)">
+                    <div *ngIf="quarterForm.controls.startDate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('startDate',quarterForm.controls.startDate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">End Date</div>
+                <p-calendar formControlName="endDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="endDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+                <div *ngIf="quarterForm.errors?.['dateInvalid'] && quarterForm.get('endDate')?.touched">
+                    <div *ngIf="quarterForm.errors?.['dateInvalid'] && quarterForm.get('endDate')?.touched"
+                        class="gilroyNormal fontRed s11 mt5">
+                        End date must be greater than Start date
+                    </div>
+                </div>
+                <div
+                    *ngIf="quarterForm.controls.endDate.invalid && (quarterForm.controls.endDate.dirty || quarterForm.controls.endDate.touched)">
+                    <div *ngIf="quarterForm.controls.endDate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('endDate',quarterForm.controls.endDate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Active</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="active" formControlName="active"
+                    optionLabel="label" filterBy="label" placeholder="Select Status" [filter]="true"
+                    [showClear]="true">
+                    <ng-template let-act pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{act.label}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="quarterForm.controls.active.invalid && (quarterForm.controls.active.dirty || quarterForm.controls.active.touched)">
+                    <div *ngIf="quarterForm.controls.active.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('active',quarterForm.controls.active.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!quarterForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!quarterForm.valid || !showUpdateButton"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('home/portal-config')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div class="p15 pl25">
+    <!-- Navigator plus heading -->
+    <!-- <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Portal Configuration</div> -->
+    <div class="gilroyNormal s13 fw600">Attendance Report</div>
+
+    <!-- initial load filter -->
+    <div class="whiteDivision">
+
+        <div class="dropdownComponent " style="margin-top: 25px;">
+            <div class="dropdownComponent gilroyNormal s13 fw600 mb7">
+                <i>Student Name : {{this.studentName}}</i>
+            </div>
+            <div class="dropdownComponent gilroyNormal s13 fw600 mb7 ml18">
+                <i>Class Name : {{this.className}}</i>
+            </div>
+        </div>
+
+        <div class="dropdownComponent ml23">
+            <div class="dropdownName">Date Range</div>
+            <p-calendar [(ngModel)]="rangeDates" [showClear]="true" [minDate]="minDate" [maxDate]="maxDate"
+                [style]="{'width':'220px'}" selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy"
+                placeholder="Select Date Range" [iconDisplay]="'input'" [showIcon]="true" (onSelect)="onSelect()"
+                (onClear)="onSelect()"></p-calendar>
+        </div>
+        <div class="disp-inline-block v-align-bottom">
+            <div [class]="rangeDates && rangeDates[0] && rangeDates[1] ? 'active-btn ml15' : 'inactive-btn ml15'"
+                (click)=" rangeDates && rangeDates[0] && rangeDates[1] ? getAttendanceReport() : ''"
+                [style.width]="enableSearchLoading ? '130px' : '90px'" style="transition: width .5s"
+                [style.cursor]="enableSearchLoading ? 'not-allowed' : ''">
+                <span *ngIf="!enableSearchLoading">Search</span>
+                <span *ngIf="enableSearchLoading"><i class="pi pi-spin pi-spinner"
+                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Searching...</span>
+            </div>
+            <!-- <div [class]="rangeDates && rangeDates[0] && rangeDates[1] ? 'reset-btn ml10 reset-btn-enabled' : 'reset-btn ml10'"
+                (click)="rangeDates && rangeDates[0] && rangeDates[1] ? reset() : ''">Reset
+            </div> -->
+        </div>
+    </div>
+    <!-- data area -->
+    <div class="whiteDivision" style="min-height: calc(100vh - 210px); margin-top: 18px; padding-bottom: 0px;">
+        <div class="search-n-heading-component">
+            <div class="disp-inline-block">
+                <div class="gilroyNormal s13 fw600 mb7">Attendance Report List</div>
+                <div class="gilroyNormal fontLightGrey s11">Total {{portalAttendance.length}} attendance records</div>
+            </div>
+            <div class="disp-inline-block float-r">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText class="inputtext-search" placeholder="Search..."
+                        [(ngModel)]="searchText" (ngModelChange)="applyFilterGlobal(searchText, 'contains')" />
+                </span>
+
+            </div>
+        </div>
+        <div class="grid-table">
+            <p-table #dt1 [value]="portalAttendance" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData"
+                [paginator]="true" [rows]="tableRows" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                [globalFilterFields]="['attendanceDate', 'dayName', 'attendanceStatus']"
+                styleClass="p-datatable-sm table-generic-style">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" pSortableColumn="attendanceDate">Date<p-sortIcon
+                                field="attendanceDate"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="dayName">Day<p-sortIcon field="dayName"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="attendanceStatus">Status<p-sortIcon
+                                field="attendanceStatus"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-attendance>
+                    <tr>
+                        <td>{{attendance.attendanceDate | date:'dd/MM/YYYY'}}</td>
+                        <td>{{attendance.dayName}}</td>
+                        <td [ngStyle]="{
+      'color': attendance.attendanceStatus === true ? 'green' :
+               attendance.attendanceStatus === false ? 'red' :
+               'purple'
+    }">
+                            {{ attendance.attendanceStatus === true ? 'Present' :
+                            attendance.attendanceStatus === false ? 'Absent' :
+                            'Holiday' }}
+                        </td>
+
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="3">No Attendance found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

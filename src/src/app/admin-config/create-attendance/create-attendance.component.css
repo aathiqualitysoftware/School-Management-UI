@@ -1,0 +1,15 @@
+/* calendar full width */
+.datecomponent .p-calendar {
+    width: 100%;
+}
+
+/* input height same as dropdown */
+.p-calendar .p-inputtext,
+.p-dropdown {
+    height: 40px;
+}
+
+/* icon button height match */
+.p-calendar .p-datepicker-trigger {
+    height: 40px;
+}

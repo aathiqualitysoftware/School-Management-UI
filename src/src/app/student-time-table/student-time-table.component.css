@@ -1,0 +1,45 @@
+/* timetable.component.scss */
+.timetable-wrapper {
+  min-height: calc(100vh - 210px);
+  margin-top: 18px;
+  padding-bottom: 0;
+  font-family: 'Gilroy', sans-serif;
+  overflow: hidden; /* prevents scrollbars */
+}
+
+.timetable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* ensures equal column widths */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.timetable th, .timetable td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #dee2e6;
+  word-wrap: break-word; /* wraps text inside cells */
+}
+
+.timetable thead {
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  color: #fff;
+}
+
+.timetable tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.day-cell {
+  font-weight: bold;
+  background-color: #e9ecef;
+}
+
+.lunch-cell {
+  background-color: #ffeeba !important;
+  font-weight: bold;
+  color: #856404;
+  border: 2px solid #ffc107;
+}

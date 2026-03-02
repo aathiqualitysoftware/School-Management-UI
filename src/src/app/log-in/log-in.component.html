@@ -1,0 +1,32 @@
+<div class="login-section">
+  <div class="login-card">
+    <div class="logo-container">
+      <!-- <img src="assets/images/school_log.png" alt="Login" class="logo" /> -->
+      <h2>Welcome Back</h2>
+      <p>Please login to continue</p>
+    </div>
+
+    <!-- <form (ngSubmit)="f.form.valid && onSubmit()" #f="logInForm" novalidate> -->
+      <form [formGroup]="logInForm" (ngSubmit)="onSubmit()">
+      <div class="login-field">
+        <span class="fa fa-user-circle-o"></span>
+        <input name="username" formControlName="username" #username required type="text" placeholder="username" />
+      </div>
+      <div *ngIf="logInForm.get('username')?.invalid && logInForm.get('username')?.touched" class="error">username is required</div>
+
+      <div class="login-field">
+        <span class="fa fa-key"></span>
+        <input name="password" formControlName="password" #password required type="password" placeholder="Password" />
+      </div>
+      <div *ngIf="logInForm.get('password')?.invalid && logInForm.get('password')?.touched" class="error">Password is required</div>
+
+      <button type="submit" class="btn-login" [disabled]="disableLoginButton">
+        Login <i *ngIf="disableLoginButton" class="fa fa-spinner fa-spin"></i>
+      </button>
+
+      <div class="extra-links">
+        <a href="#">Forgot Password?</a> 
+      </div>
+    </form>
+  </div>
+</div>

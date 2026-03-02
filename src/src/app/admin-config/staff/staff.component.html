@@ -1,0 +1,133 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div class="p15 pl25">
+    <!-- Navigator plus heading -->
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Staff</div>
+    <div class="gilroyNormal s13 fw600">Staff</div>
+
+    <!-- initial load filter -->
+    <div class="whiteDivision">
+        <div class="dropdownComponent">
+            <div class="dropdownName">Departments</div>
+            <p-dropdown [options]="departments" [(ngModel)]="selectedDepartment" optionLabel="name"
+                [filter]="true" filterBy="name" [filterFields]="['name']" [showClear]="true"
+                placeholder="Select Department" class="pDropdown" (onChange)="onDepartment($event)">
+                <ng-template let-class pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{ class.name }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+
+        <div class="disp-inline-block v-align-bottom">
+            <div [class]="selectedDepartment  ? 'active-btn ml15' : 'inactive-btn ml15'"
+                (click)=" selectedDepartment  ? getStaff() : ''" [style.width]="enableSearchLoading ? '130px' : '90px'"
+                style="transition: width .5s" [style.cursor]="enableSearchLoading ? 'not-allowed' : ''">
+                <span *ngIf="!enableSearchLoading">Search</span>
+                <span *ngIf="enableSearchLoading"><i class="pi pi-spin pi-spinner"
+                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Searching...</span>
+            </div>
+            <div [class]="selectedDepartment  ? 'reset-btn ml10 reset-btn-enabled' : 'reset-btn ml10'"
+                (click)="selectedDepartment  ? reset() : ''">Reset</div>
+        </div>
+
+    </div>
+
+    <!-- data area -->
+     <!-- min-height: calc(100vh - 210px);  -->
+    <div class="whiteDivision" style="margin-top: 18px; padding-bottom: 0px;">
+        <div class="search-n-heading-component">
+            <div class="disp-inline-block">
+                <div class="gilroyNormal s13 fw600 mb7">Staff List</div>
+                <div class="gilroyNormal fontLightGrey s11">Total {{staffs.length}} staffs</div>
+            </div>
+            <div class="disp-inline-block float-r">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText class="inputtext-search" placeholder="Search by Staff name"
+                        [(ngModel)]="searchText" (ngModelChange)="applyFilterGlobal(searchText, 'contains')" />
+                </span>
+                <div class="success-btn ml12 success-btn-enabled" (click)="createNav()" *ngIf="isRoleReadWrite()"><i
+                        class="pi pi-plus"></i>Create a new Staff
+                </div>
+            </div>
+        </div>
+        <div class="grid-table">
+            <p-table #dt1 [value]="staffs" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData" [paginator]="true"
+                [rows]="tableRows" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                [globalFilterFields]="['phone','middleName', 'firstName', 'lastName',  'email','department','designation']"
+                styleClass="p-datatable-sm table-generic-style">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" pSortableColumn="staffId"> StaffId<p-sortIcon field="staffId"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="name"> Name<p-sortIcon field="name"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="dob"> DOB<p-sortIcon field="dob"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="joiningDate"> DOJ<p-sortIcon field="joiningDate"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="gender"> Gender<p-sortIcon field="gender"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="staffStatus"> Active<p-sortIcon
+                                field="staffStatus"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="phone"> Phone<p-sortIcon field="phone"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="email"> Email<p-sortIcon field="email"></p-sortIcon></th>
+                        <th scope="col" pSortableColumn="address"> Address<p-sortIcon field="address"></p-sortIcon></th>
+                        <th style="text-align: center;">Action</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td>{{user.staffId}}</td>
+                        <td>{{user.firstName}} {{user.middleName}} {{user.lastName}} </td>
+                        <td>{{user.dob | date:'dd/MM/YYYY'}}</td>
+                        <td>{{user.joiningDate | date:'dd/MM/YYYY'}}</td>
+                        <td>{{user.gender}}</td>
+                        <td>{{user.staffStatus}}</td>
+                        <td>{{user.phone}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.address}}</td>
+
+                        <td class="editArea" style="text-align: center;">
+                            <span (click)="viewContent(user)" *ngIf="isRoleReadOnly()">
+                                <i class="pi pi-external-link editiconSize s8 mr3"></i>
+                                <span class="v-align-mid fw600 ">View</span>
+                            </span>
+                            <span (click)="editContent(user)" *ngIf="isRoleReadWrite()">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-file-edit editiconSize fontBlack"></i>
+                                <span class="v-align-mid fw600 fontBlack">Edit</span>
+                            </span>
+                            <span (click)="confirm($event, user)" *ngIf="isRoleReadWrite()">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-trash editiconSize fontRed"></i>
+                                <span class="v-align-mid fw600 fontRed">Delete</span>
+                            </span>
+                            <div class="card flex justify-content-center gap-2">
+                                <p-confirmPopup styleClass="confirmpopup">
+                                    <ng-template pTemplate="headless" let-message let-test>
+                                        <div class="gilroyNormal s12 mb12">{{ message.message }}</div>
+                                        <div class="flex align-items-center gap-2 mt-3">
+                                            <div (click)="!deleteLoading ? confirmPopup() : ''"
+                                                class="success-btn deleteConfirmBtn success-btn-enabled"
+                                                [style.width]="deleteLoading ? '130px' : ''"
+                                                [style.cursor]="deleteLoading ? 'not-allowed' : 'pointer'">
+                                                <i *ngIf="deleteLoading" class="pi pi-spin pi-spinner"
+                                                    style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>{{deleteCnfText}}
+                                            </div>
+                                            <div (click)="cancelPopup()" class="cancel-btn ml10">Cancel</div>
+                                        </div>
+                                    </ng-template>
+                                </p-confirmPopup>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="11">No staffs found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div class="p15 pl25">
+    <div class="gilroyNormal s13 fw600">Subject Management</div>
+
+    <div class="whiteDivision">
+        <div class="dropdownComponent">
+            <div class="dropdownName">Class</div>
+            <p-dropdown class="pDropdown pDropdown300px" [(ngModel)]="selectedclass" [options]="Classes"
+                optionLabel="name" filterBy="name" placeholder="Select Class" [filter]="true" [showClear]="true"
+                (onChange)="onClassChange()">
+                <ng-template let-cls pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{cls.name}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="dropdownComponent ml12">
+            <div class="dropdownName">Section</div>
+            <p-dropdown class="pDropdown pDropdown300px" [(ngModel)]="selectedsection" [options]="filteredSections"
+                optionLabel="sectionName" filterBy="sectionName" placeholder="Select Section" [filter]="true"
+                [showClear]="true">
+                <ng-template let-sec pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{sec.sectionName}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="disp-inline-block v-align-bottom">
+            <div [class]="selectedclass && selectedsection ? 'active-btn ml15' : 'inactive-btn ml15'"
+                (click)=" selectedclass && selectedsection ? getdatabysearch() : ''"
+                [style.width]="enableSearchLoading ? '130px' : '90px'" style="transition: width .5s"
+                [style.cursor]="enableSearchLoading ? 'not-allowed' : ''">
+                <span *ngIf="!enableSearchLoading">Search</span>
+                <span *ngIf="enableSearchLoading"><i class="pi pi-spin pi-spinner"
+                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Searching...</span>
+            </div>
+            <div [class]="selectedclass && selectedsection ? 'reset-btn ml10 reset-btn-enabled' : 'reset-btn ml10'"
+                (click)="selectedclass && selectedsection ? resetFilter() : ''">Reset</div>
+        </div>
+    </div>
+    <!-- min-height: calc(100vh - 210px);  -->
+    <div class="whiteDivision" style="margin-top: 18px; padding-bottom: 0px;">
+        <div class="search-n-heading-component">
+            <div class="disp-inline-block">
+                <div class="gilroyNormal s13 fw600 mb7">Subject Management List</div>
+                <div class="gilroyNormal fontLightGrey s11">
+                    Total {{classSubjects.length}} Classes & Subjects
+                </div>
+            </div>
+            <div class="disp-inline-block float-r">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText class="inputtext-search" placeholder="Search" [(ngModel)]="searchText"
+                        (ngModelChange)="applyGlobalFilter(searchText, 'contains')" />
+                </span>
+                <div class="success-btn ml12 success-btn-enabled" (click)="createSubject()">
+                    <i class="pi pi-plus"></i>
+                    Add New Subject Management
+                </div>
+            </div>
+
+
+            <div class="grid-table">
+                <p-table #dt1 [value]="classSubjects" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData"
+                    [paginator]="true" [rows]="tableRows" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                    [globalFilterFields]="['id','className','subjectName','sectionName','staffName','subjectTypeName']"
+                    styleClass="p-datatable-sm table-generic-style">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th scope="col" pSortableColumn="id"> Id<p-sortIcon field="id"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="className"> Class Name<p-sortIcon
+                                    field="className"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="subjectname"> Subject Name<p-sortIcon
+                                    field="subjectname"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="sectionName"> Section Name<p-sortIcon
+                                    field="sectionName"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="subjectTypeName"> Subject Type<p-sortIcon
+                                    field="subjectTypeName"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="staffName"> Assigned Teacher<p-sortIcon
+                                    field="staffName"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="action"> Action<p-sortIcon field="action"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-sub let-i="rowIndex">
+                        <tr>
+                            <td>{{sub.id}}</td>
+                            <td>{{sub.className}}</td>
+                            <td>{{sub.subjectName}}</td>
+                            <td>{{sub.sectionName}}</td>
+                            <td>{{sub.subjectTypeName }}</td>
+                            <td>{{sub.staffName }}</td>
+                            <td class="editArea" style="text-align: center;">
+                                <span (click)="viewContent(sub)">
+                                    <i class="pi pi-external-link editiconSize s8 mr3"></i>
+                                    <span class="v-align-mid fw600 ">View</span>
+                                </span>
+                                <span (click)="editContent(sub)">
+                                    <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                    <i class="pi pi-file-edit editiconSize fontBlack"></i>
+                                    <span class="v-align-mid fw600 fontBlack">Edit</span>
+                                </span>
+                                <span (click)="confirm($event, sub)">
+                                    <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                    <i class="pi pi-trash editiconSize fontRed"></i>
+                                    <span class="v-align-mid fw600 fontRed">Delete</span>
+                                </span>
+                                <div class="card flex justify-content-center gap-2">
+                                    <p-confirmPopup styleClass="confirmpopup">
+                                        <ng-template pTemplate="headless" let-message let-test>
+                                            <div class="gilroyNormal s12 mb12">{{ message.message }}</div>
+                                            <div class="flex align-items-center gap-2 mt-3">
+                                                <div (click)="!deleteLoading ? confirmPopup() : ''"
+                                                    class="success-btn deleteConfirmBtn success-btn-enabled"
+                                                    [style.width]="deleteLoading ? '130px' : ''"
+                                                    [style.cursor]="deleteLoading ? 'not-allowed' : 'pointer'">
+                                                    <i *ngIf="deleteLoading" class="pi pi-spin pi-spinner"
+                                                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>{{deleteCnfText}}
+                                                </div>
+                                                <div (click)="cancelPopup()" class="cancel-btn ml10">Cancel</div>
+                                            </div>
+                                        </ng-template>
+                                    </p-confirmPopup>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>

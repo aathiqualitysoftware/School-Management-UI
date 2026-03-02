@@ -1,0 +1,39 @@
+<!-- Existing content (school info, social media) -->
+
+<div class="container">
+  <div class="section glassmorphism">
+    <h2>Upcoming Exam – Time Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Subject Name</th>
+          <th>Exam Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exam of upcomingExams">
+          <td>{{ exam.subjectName }}</td>
+          <td>{{ exam.examDate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section glassmorphism">
+    <h2>Previous Exam – Results</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Subject Name</th>
+          <th>Marks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of previousResults">
+          <td>{{ result.subjectName }}</td>
+          <td>{{ result.marks }}/100</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

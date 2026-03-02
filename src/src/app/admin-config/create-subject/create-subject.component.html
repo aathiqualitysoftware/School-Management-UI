@@ -1,0 +1,89 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/portal-config')">Subject</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Subject</span>
+        <span *ngIf="action == 'edit'">Edit Subject</span>
+        <span *ngIf="action == 'view'">View Subject</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create new Subject</span>
+        <span *ngIf="action == 'edit'">Edit existing Subject</span>
+        <span *ngIf="action == 'view'">View existing Subject</span>
+    </div>
+
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create new Subject</div>
+        <form [formGroup]="subjectForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Subject Name</div>
+                <input type="text" class="pinputText pinputText300px" pInputText formControlName="name">
+                <div
+                    *ngIf="subjectForm.controls.name.invalid && (subjectForm.controls.name.dirty || subjectForm.controls.name.touched)">
+                    <div *ngIf="subjectForm.controls.name.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('name',subjectForm.controls.name.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Department</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="departments" formControlName="department"
+                    optionLabel="name" filterBy="name" placeholder="Select Department"
+                    [filter]="true" [showClear]="true">
+                    <ng-template let-dept pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{dept.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="subjectForm.controls.department.invalid && (subjectForm.controls.department.dirty || subjectForm.controls.department.touched)">
+                    <div *ngIf="subjectForm.controls.department.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('department',subjectForm.controls.department.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Assigned</div>
+                <p-dropdown class="pDropdown pDropdown300px" optionValue="value" [options]="assigned"
+                    formControlName="assigned" optionLabel="label" filterBy="label" placeholder="Assigned"
+                    [filter]="true" [showClear]="true">
+                    <ng-template let-ass pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ass.label}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="subjectForm.controls.assigned.invalid && (subjectForm.controls.assigned.dirty || subjectForm.controls.assigned.touched)">
+                    <div *ngIf="subjectForm.controls.assigned.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('assigned',subjectForm.controls.assigned.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!subjectForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!subjectForm.valid || !showUpdateButton"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('home/portal-config')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

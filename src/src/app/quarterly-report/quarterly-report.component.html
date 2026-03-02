@@ -1,0 +1,170 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div *ngIf="!dashBoardPageDisabled" class="p15 pl25">
+    <!-- Navigator plus heading -->
+    <!-- <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Portal Configuration</div> -->
+    <div class="gilroyNormal s13 fw600">Exam Report</div>
+    <!-- data area -->
+    <div class="whiteDivision" style="min-height: calc(100vh - 210px); margin-top: 18px; padding-bottom: 0px;">
+        <div class="search-n-heading-component">
+            <div class="disp-inline-block">
+                <div class="gilroyNormal s13 fw600 mb7">Exam Report List</div>
+                <div class="gilroyNormal fontLightGrey s11">Total {{portalExam.length}} Exam records</div>
+            </div>
+            <div class="disp-inline-block float-r">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText class="inputtext-search" placeholder="Search..."
+                        [(ngModel)]="searchText" (ngModelChange)="applyFilterGlobal(searchText, 'contains')" />
+                </span>
+
+            </div>
+        </div>
+        <div class="grid-table">
+            <p-table #dt1 [value]="portalExam" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData"
+                [paginator]="true" [rows]="tableRows" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                [globalFilterFields]="['examTypeName', 'gradeName', 'avgMarks']"
+                styleClass="p-datatable-sm table-generic-style">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" pSortableColumn="examTypeName">Exam Name<p-sortIcon
+                                field="examTypeName"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="gradeName">Overall Grade<p-sortIcon
+                                field="gradeName"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="avgMarks">Average Mark<p-sortIcon
+                                field="avgMarks"></p-sortIcon></th>
+                        <th style="text-align: center;">Action</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-report>
+                    <tr>
+                        <td>{{report.examTypeName}}</td>
+                        <td>{{report.gradeName}}</td>
+                        <td>{{report.avgMarks}}</td>
+                        <td class="editArea" style="text-align: center;">
+                            <span (click)="viewContent(report)">
+                                <i class="pi pi-eye editiconSize s8 mr3"></i>
+                                <span class="v-align-mid fw600 ">View & Download</span>
+                            </span>
+                            <!-- <span (click)="downloadContent(report)">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-download editiconSize s8 mr3"></i>
+                                <span class="v-align-mid fw600">Download</span>
+                            </span> -->
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4">No Exam found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<div class="p15 pl25" *ngIf="dashBoardPageDisabled">
+
+    <!-- <div style="display: flex; justify-content: center; cursor: pointer;" (click)="downloadPDF()"
+        [class]="buttonDisabled ? 'reset-btn ml10 reset-btn-disabled' : 'reset-btn ml10 reset-btn-enabled'">
+        Download PDF
+    </div> -->
+
+    <div class="mt40">
+        <button type="submit" class="success-btn fw600 addlPaddingNBorder" (click)="downloadPDF()">
+            <span>
+                <i class="pi pi-download editiconSize s8 mr3"></i>
+                <span class="v-align-mid fw600 ">Download</span>
+            </span>
+        </button>
+
+        <button type="button" class="cancel-btn ml10 fw600" (click)="goback()">
+            <span>
+                <i class="pi pi-arrow-left editiconSize s8 mr3"></i>
+                <span class="v-align-mid fw600 ">Back</span>
+            </span></button>
+    </div>
+
+    <div class="whiteDivision" #reportContent id="reportContent">
+        <h2>Quarterly Report</h2>
+        <!-- <div class="student-info">
+    <p><strong>Student Report – {{ student.quarter }}</strong></p>
+    <p><strong>Student Name:</strong> {{ student.name }}</p>
+    <p><strong>Roll No.:</strong> {{ student.rollNo }} | <strong>Class:</strong> {{ student.class }}</p>
+    <p><strong>Date Issued:</strong> {{ student.reportDate }}</p>
+  </div> -->
+        <div class="student-info" style="display: flex; gap: 4rem;">
+            <div><strong>Student Report –</strong> {{ student?.quarter }}</div>
+            <div><strong>Student Name:</strong> {{ student?.name }}</div>
+            <div><strong>Roll No.:</strong> {{ student?.rollNo }}</div>
+            <div><strong>Class:</strong> {{ student?.class }}</div>
+            <div><strong>Date Issued:</strong> {{ student?.reportDate }}</div>
+        </div>
+
+        <div class="section-row">
+            <div class="left-section">
+                <h3>Academic Performance</h3>
+                <table class="marks-table">
+                    <tr>
+                        <th>Subject</th>
+                        <th>Marks Obtained</th>
+                        <th>Total Marks</th>
+                        <th>Grade</th>
+                    </tr>
+                    <tr *ngFor="let subject of subjects">
+                        <td>{{ subject?.name }}</td>
+                        <td>{{ subject?.marks }}</td>
+                        <td>{{ subject?.total }}</td>
+                        <td>{{ subject?.grade }}</td>
+                    </tr>
+                </table>
+                <p><strong>Average Marks:</strong> {{this.averageMarks}}</p>
+                <p><strong>Overall Grade:</strong> {{this.averageGrade}}</p>
+            </div>
+
+            <div>
+                <p-chart style="    display: block;
+    box-sizing: border-box;
+    height: 290px;
+    width: 580px;" type="bar" [data]="barData" [options]="barOptions"></p-chart>
+            </div>
+        </div>
+
+        <div class="section-row-pie">
+            <div class="left-section-pie">
+                <h3>Attendance Summary</h3>
+                <table class="attendance-table">
+                    <tr>
+                        <td><strong>Total Working Days:</strong></td>
+                        <td>{{ attendance?.workingDays }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Days Present:</strong></td>
+                        <td>{{ attendance?.presentDays }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exam %:</strong></td>
+                        <td>{{ attendance?.percentage }}%</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="width: 45%;">
+                <p-chart style="display: block;
+    box-sizing: border-box;
+    height: 350px;
+    width: 300px;" type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
+            </div>
+        </div>
+
+        <div class="remarks">
+            <h3>Remarks by Class Teacher</h3>
+            <p>"{{ remarks.text }}"</p>
+            <p><strong>Class Teacher:</strong> {{ remarks?.teacher }}</p>
+        </div>
+
+    </div>
+</div>

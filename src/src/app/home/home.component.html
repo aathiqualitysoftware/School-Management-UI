@@ -1,0 +1,152 @@
+<div class="mainWrapper">
+    <div class="pageWrapper">
+        <div class="leftSpan">
+            <div class="m23">
+                <img src="assets/images/school_illust.png" height="70px">
+            </div>
+            <div class="mt23 ml23 mb16">
+                <div class="gilroyNormal s16 mt32">Welcome Back!</div>
+                <div class="gilroyNormal s16 mt13">{{name}}</div>
+                <!-- <div class="gilroyNormal fontGrey s12 mt5">Admin user</div> -->
+                <div class="gilroyNormal fontGrey s12 mt5 pr20" style="line-break: anywhere;">{{username}}</div>
+            </div>
+            <div class="leftNavBar">
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navs;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsExam;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsAttendanceReport;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsQuarterly;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsTimeTable;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsSchoolInformation;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsFees;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsExamReport;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsStudent;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsAttendance;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div class="gilroyNormal fontMediumBlack s13 p15 pl25 centerText nav"
+                    [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                    (click)="navigateMenu(nav.navURL)" *ngFor="let nav of navsClassesSubjects;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/'+nav.navURL)"></div>
+                    <img [src]="nav.navIcon" width="20px" class="mr13 navIcon">
+                    <span>{{nav.navName}}</span>
+                </div>
+                <div *ngIf="portal_configuration_navs.length>0" style="position: relative;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/home/portal-config/')"></div>
+                    <p-accordion expandIcon="pi pi-angle-down" collapseIcon="pi pi-angle-up">
+                        <p-accordionTab header="Portal Configuration" class="gilroyNormal fontMediumBlack s13 normalNav"
+                            [selected]="pathname.includes('#/home/portal-config/') ? true : false "
+                            [ngClass]="pathname.includes('#/home/portal-config/') ? 'highlightedNav' : 'normalNav' ">
+                            <div class="gilroyNormal fontMediumBlack s13 p15 pl35 centerText nav"
+                                [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                                (click)="navigateMenu(nav.navURL)" *ngFor="let nav of portal_configuration_navs;">
+                                <i class="pi pi-circle-fill" style="font-size: 6px; margin-right: 10px;"></i>
+                                <span>{{nav.navName}}</span>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+                <div *ngIf="report_configuration_navs.length>0" style="position: relative;">
+                    <div class="leftOrange" *ngIf="pathname.includes('#/home/vega-config/')"></div>
+                    <p-accordion expandIcon="pi pi-angle-down" collapseIcon="pi pi-angle-up">
+                        <p-accordionTab header="Report Configuration" class="gilroyNormal fontMediumBlack s13 normalNav"
+                            [selected]="pathname.includes('#/home/vega-config/') ? true : false "
+                            [ngClass]="pathname.includes('#/home/vega-config/') ? 'highlightedNav' : 'normalNav' ">
+                            <div class="gilroyNormal fontMediumBlack s13 p15 pl35 centerText nav"
+                                [ngClass]="pathname.includes('#/'+nav.navURL) ? 'activeNav' : 'nav' "
+                                (click)="navigateMenu(nav.navURL)" *ngFor="let nav of report_configuration_navs;">
+                                <i class="pi pi-circle-fill" style="font-size: 6px; margin-right: 10px;"></i>
+                                <span>{{nav.navName}}</span>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+
+            </div>
+        </div>
+        <div class="rightSpan">
+            <div class="headerArea">
+                <div class="leftHeadingArea">
+                    <div class="gilroyNormal s16">YT School </div>
+                    <div class="gilroyNormal fontGrey s9 mt5">By YT School System</div>
+                </div>
+                <div class="rightIconsArea">
+                    <!-- <div class="iconArea">
+              <img src="assets/images/profile-icon.svg" width="33px" style="vertical-align: middle;">
+          </div> -->
+                    <div class="iconArea" (click)="logout()">
+                        <img src="assets/images/logout-icon.svg" width="15px" height="15px"
+                            style="object-fit: cover; margin-top: 9px;">
+                    </div>
+                </div>
+
+            </div>
+            <div class="contentArea">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+    <div class="footerArea">
+        <img src="assets/images/yt.jpeg" height="30px" alt="YT Logo">
+        <span class="footerText">
+            Developed by YT SOFTWARE SOLUTIONS PRIVATE LIMITED. All rights reserved.
+        </span>
+    </div>
+</div>

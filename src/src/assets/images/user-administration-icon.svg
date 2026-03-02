@@ -1,0 +1,14 @@
+<svg id="Dashboard_Icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_7706" data-name="Rectangle 7706" width="21.016" height="23.977" fill="currentColor"/>
+    </clipPath>
+  </defs>
+  <rect id="Rectangle_7794" data-name="Rectangle 7794" width="32" height="32" fill="none"/>
+  <g id="Group_29151" data-name="Group 29151" transform="translate(5 4)">
+    <g id="Group_13852" data-name="Group 13852" clip-path="url(#clip-path)">
+      <path id="Path_13616" data-name="Path 13616" d="M10.515,123.653q-4.409,0-8.819,0A1.611,1.611,0,0,1,0,121.915a6.959,6.959,0,0,1,.078-.961,8.056,8.056,0,0,1,4.947-6.442,7.065,7.065,0,0,1,2.784-.607c1.786-.026,3.574-.048,5.359,0a8.1,8.1,0,0,1,7.737,6.93c.049.349.082.7.106,1.053a1.638,1.638,0,0,1-1.678,1.763q-4.409.009-8.819,0m0-1.534h8.474c.452,0,.473-.021.446-.478-.008-.145-.032-.289-.052-.432a6.4,6.4,0,0,0-3.07-4.817,6.984,6.984,0,0,0-3.658-.964c-1.391-.018-2.783-.011-4.175,0a8.452,8.452,0,0,0-2.185.279,6.427,6.427,0,0,0-4.722,5.954c-.025.445,0,.459.437.459h8.5" transform="translate(0 -99.678)" fill="currentColor"/>
+      <path id="Path_13617" data-name="Path 13617" d="M41.982,12a5.946,5.946,0,0,1-6-6.022A5.941,5.941,0,0,1,42.021,0,5.877,5.877,0,0,1,48,6.006a5.882,5.882,0,0,1-6.018,6M37.548,6.014a4.45,4.45,0,1,0,8.9-.04,4.45,4.45,0,0,0-8.9.04" transform="translate(-31.491 0)" fill="currentColor"/>
+    </g>
+  </g>
+</svg>

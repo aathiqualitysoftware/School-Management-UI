@@ -1,0 +1,169 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/portal-config')">Exam management</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Exam</span>
+        <span *ngIf="action == 'edit'">Edit Exam</span>
+        <span *ngIf="action == 'view'">View Exam</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create new Exam</span>
+        <span *ngIf="action == 'edit'">Edit existing Exam</span>
+        <span *ngIf="action == 'view'">View existing Exam</span>
+    </div>
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create new Exam</div>
+        <form [formGroup]="examForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Exam Name</div>
+                <input type="text" class="pinputText pinputText300px" pInputText formControlName="name">
+                <div
+                    *ngIf="examForm.controls.name.invalid && (examForm.controls.name.dirty || examForm.controls.name.touched)">
+                    <div *ngIf="examForm.controls.name.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('name',examForm.controls.name.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Subject</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="subjects" formControlName="subject"
+                    optionLabel="name" filterBy="name" placeholder="Select Subject" [filter]="true" [showClear]="true">
+                    <ng-template let-sub pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{sub.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="examForm.controls.subject.invalid && (examForm.controls.subject.dirty || examForm.controls.subject.touched)">
+                    <div *ngIf="examForm.controls.subject.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('subject',examForm.controls.subject.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Class</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="classes" formControlName="class"
+                    optionLabel="name" filterBy="name" placeholder="Select Class" [filter]="true" [showClear]="true"
+                    (onChange)="onClassChange()">
+                    <ng-template let-cls pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{cls.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="examForm.controls.class.invalid && (examForm.controls.class.dirty || examForm.controls.class.touched)">
+                    <div *ngIf="examForm.controls.class.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('class',examForm.controls.class.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Section</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="filteredSections" formControlName="section"
+                    optionLabel="sectionName" filterBy="sectionName" placeholder="Select Section" [filter]="true"
+                    [showClear]="true">
+                    <ng-template let-sec pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{sec.sectionName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="examForm.controls.section.invalid && (examForm.controls.section.dirty || examForm.controls.section.touched)">
+                    <div *ngIf="examForm.controls.section.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('section',examForm.controls.section.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Start Date</div>
+                <p-calendar formControlName="startDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="startDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+                <div
+                    *ngIf="examForm.controls.startDate.invalid && (examForm.controls.startDate.dirty || examForm.controls.startDate.touched)">
+                    <div *ngIf="examForm.controls.startDate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('startDate',examForm.controls.startDate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">End Date</div>
+                <p-calendar formControlName="endDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="endDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+                <div *ngIf="examForm.errors?.['dateInvalid'] && examForm.get('endDate')?.touched">
+                    <div *ngIf="examForm.errors?.['dateInvalid'] && examForm.get('endDate')?.touched"
+                        class="gilroyNormal fontRed s11 mt5">
+                        End date must be greater than Start date
+                    </div>
+                </div>
+                <div
+                    *ngIf="examForm.controls.endDate.invalid && (examForm.controls.endDate.dirty || examForm.controls.endDate.touched)">
+                    <div *ngIf="examForm.controls.endDate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('endDate',examForm.controls.endDate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Exam Type</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="examTypes" formControlName="type"
+                    optionLabel="name" filterBy="name" [filter]="true" [showClear]="true"
+                    placeholder="Select Exam Type">
+                    <ng-template let-exm pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{exm.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="examForm.controls.type.invalid && (examForm.controls.type.dirty || examForm.controls.type.touched)">
+                    <div *ngIf="examForm.controls.type.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('type',examForm.controls.type.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Year</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="years" formControlName="year" optionLabel="name"
+                    filterBy="name" placeholder="Select Year" [filter]="true" [showClear]="true">
+                    <ng-template let-year pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{year.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="examForm.controls.year.invalid && (examForm.controls.year.dirty || examForm.controls.year.touched)">
+                    <div *ngIf="examForm.controls.year.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('year',examForm.controls.year.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!examForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!examForm.valid || !showUpdateButton"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('home/portal-config')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

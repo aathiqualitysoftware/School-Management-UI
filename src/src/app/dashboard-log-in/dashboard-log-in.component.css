@@ -1,0 +1,66 @@
+.login-page {
+  background-image: url('/assets/images/origin-dashboard-login.png'); /* use your actual image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.85); /* soft white overlay */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.login-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+   min-width: 500px;
+  width: 100%;
+}
+
+.login-card {
+  background-color: #f5faff; /* soft blue tone */
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.login-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.login-card input[type="radio"] {
+  display: none;
+}
+
+.login-card input[type="radio"]:checked + .card-content {
+  border-left: 4px solid #007bff;
+  background-color: #e6f0ff;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-content img {
+  height: 30px;
+}
+
+.card-content span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}

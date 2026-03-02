@@ -1,0 +1,568 @@
+<p-toast position="top-center" key="tc"></p-toast>
+<div class="p15 pl25">
+    <!-- Navigator plus heading -->
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('admin-config/student')">Student Administration</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Student</span>
+        <span *ngIf="action == 'edit'">Edit Student</span>
+        <span *ngIf="action == 'view'">View Student</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create new Student</span>
+        <span *ngIf="action == 'edit'">Edit existing Student</span>
+        <span *ngIf="action == 'view'">View existing Student</span>
+    </div>
+
+    <!-- createStudent form -->
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create new Student</div>
+        <form [formGroup]="studentForm">
+            <!-- Classes -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Classes</div>
+
+                <p-dropdown [options]="classes" [(ngModel)]="selectedClass" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Class"
+                    class="pDropdown pDropdown300px" formControlName="classId" (onChange)="onClass($event)">
+                    <ng-template let-class pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ class.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.classId.invalid && (studentForm.controls.classId.dirty || studentForm.controls.classId.touched)">
+                    <div *ngIf="studentForm.controls.classId.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('classId',studentForm.controls.classId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- Sections -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Sections</div>
+                <p-dropdown [options]="sections" [(ngModel)]="selectedSection" optionLabel="sectionLabel"
+                    [filter]="true" [filterFields]="['sectionName']" [showClear]="true" placeholder="Select Section"
+                    class="pDropdown pDropdown300px" formControlName="sectionId" (onChange)="onSection($event)">
+                    <ng-template let-section pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{section.sectionName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.sectionId.invalid && (studentForm.controls.sectionId.dirty || studentForm.controls.sectionId.touched)">
+                    <div *ngIf="studentForm.controls.sectionId.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('sectionId',studentForm.controls.sectionId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- firstName -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">First Name</div>
+                <input type="text" pInputText [(ngModel)]="firstName" class="pinputText pinputText300px"
+                    formControlName="firstName" />
+                <div
+                    *ngIf="studentForm.controls.firstName.invalid && (studentForm.controls.firstName.dirty || studentForm.controls.firstName.touched)">
+                    <div *ngIf="studentForm.controls.firstName.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('firstName',studentForm.controls.firstName.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- lastName -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Last Name</div>
+                <input type="text" pInputText [(ngModel)]="lastName" class="pinputText pinputText300px"
+                    formControlName="lastName" />
+                <div
+                    *ngIf="studentForm.controls.lastName.invalid && (studentForm.controls.lastName.dirty || studentForm.controls.lastName.touched)">
+                    <div *ngIf="studentForm.controls.lastName.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('lastName',studentForm.controls.lastName.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- mobileNumber -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Mobile Number</div>
+                <input type="text" pInputText [(ngModel)]="mobileNumber" class="pinputText pinputText300px"
+                    formControlName="mobileNumber" />
+                <div
+                    *ngIf="studentForm.controls.mobileNumber.invalid && (studentForm.controls.mobileNumber.dirty || studentForm.controls.mobileNumber.touched)">
+                    <div *ngIf="studentForm.controls.mobileNumber.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('mobileNumber',studentForm.controls.mobileNumber.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- permanentAddress -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Permanent Address</div>
+                <input type="text" pInputText [(ngModel)]="permanentAddress" class="pinputText pinputText300px"
+                    formControlName="permanentAddress" />
+                <div
+                    *ngIf="studentForm.controls.permanentAddress.invalid && (studentForm.controls.permanentAddress.dirty || studentForm.controls.permanentAddress.touched)">
+                    <div *ngIf="studentForm.controls.permanentAddress.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('permanentAddress',studentForm.controls.permanentAddress.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- aadhaarCardNumber -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Aadhaar Card Number</div>
+                <input type="text" pInputText [(ngModel)]="aadhaarCardNumber" class="pinputText pinputText300px"
+                    formControlName="aadhaarCardNumber" />
+                <div
+                    *ngIf="studentForm.controls.aadhaarCardNumber.invalid && (studentForm.controls.aadhaarCardNumber.dirty || studentForm.controls.aadhaarCardNumber.touched)">
+                    <div *ngIf="studentForm.controls.aadhaarCardNumber.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('aadhaarCardNumber',studentForm.controls.aadhaarCardNumber.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- admissionNumber -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Admission Number</div>
+                <input type="text" pInputText [(ngModel)]="admissionNumber" class="pinputText pinputText300px"
+                    formControlName="admissionNumber" />
+                <div
+                    *ngIf="studentForm.controls.admissionNumber.invalid && (studentForm.controls.admissionNumber.dirty || studentForm.controls.admissionNumber.touched)">
+                    <div *ngIf="studentForm.controls.admissionNumber.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('admissionNumber',studentForm.controls.admissionNumber.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- rollNumber -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Roll Number</div>
+                <input type="text" pInputText [(ngModel)]="rollNumber" class="pinputText pinputText300px"
+                    formControlName="rollNumber" />
+                <div
+                    *ngIf="studentForm.controls.rollNumber.invalid && (studentForm.controls.rollNumber.dirty || studentForm.controls.rollNumber.touched)">
+                    <div *ngIf="studentForm.controls.rollNumber.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('rollNumber',studentForm.controls.rollNumber.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- Date of Admission -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Date of Admission</div>
+                <p-calendar formControlName="dateOfAdmission" [showClear]="true" [(ngModel)]="dateOfAdmission"
+                    [minDate]="dateOfBirth || minAdmissionDate" [maxDate]="maxAdmissionDate" [style]="{'width':'300px'}"
+                    [readonlyInput]="true" dateFormat="dd/mm/yy" placeholder="Select Admission Date"
+                    [iconDisplay]="'input'" [showIcon]="true">
+                </p-calendar>
+                <div *ngIf="studentForm.get('dateOfAdmission')?.invalid && studentForm.get('dateOfAdmission')?.touched">
+                    Date of Admission is required.
+                </div>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Date of Birth</div>
+                <p-calendar formControlName="dateOfBirth" [showClear]="true" [minDate]="minBirthDate"
+                    [(ngModel)]="dateOfBirth" [maxDate]="maxBirthDate" [style]="{'width':'300px'}"
+                    [readonlyInput]="true" dateFormat="dd/mm/yy" placeholder="Select Date of Birth"
+                    [iconDisplay]="'input'" [showIcon]="true">
+                </p-calendar>
+                <div *ngIf="studentForm.get('dateOfBirth')?.invalid && studentForm.get('dateOfBirth')?.touched">
+                    Date of Birth is required.
+                </div>
+            </div>
+
+            <!-- academicYearId -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Academic Year</div>
+
+                <p-dropdown [options]="academics" [(ngModel)]="selectedAcademic" optionLabel="academicYearName"
+                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Academic Year"
+                    class="pDropdown pDropdown300px" formControlName="academicYearId"
+                    (onChange)="onAcademicYear($event)">
+                    <ng-template let-academicYear pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ academicYear.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.academicYearId.invalid && (studentForm.controls.academicYearId.dirty || studentForm.controls.academicYearId.touched)">
+                    <div *ngIf="studentForm.controls.academicYearId.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('academicYearId',studentForm.controls.academicYearId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- bloodGroupId -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Blood Group</div>
+
+                <p-dropdown [options]="bloodGroups" [(ngModel)]="selectedBloodGroup" optionLabel="name"
+                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Blood Group"
+                    class="pDropdown pDropdown300px" formControlName="bloodGroupId" (onChange)="onBloodGroup($event)">
+                    <ng-template let-bloodGroup pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ bloodGroup.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.bloodGroupId.invalid && (studentForm.controls.bloodGroupId.dirty || studentForm.controls.bloodGroupId.touched)">
+                    <div *ngIf="studentForm.controls.bloodGroupId.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('bloodGroupId',studentForm.controls.bloodGroupId.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- casteCategoryId -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Caste Category</div>
+
+                <p-dropdown [options]="cateCategory" [(ngModel)]="selectedCateCategory" optionLabel="name"
+                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Caste Category"
+                    class="pDropdown pDropdown300px" formControlName="casteCategoryId" (onChange)="onCategory($event)">
+                    <ng-template let-category pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ category.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.casteCategoryId.invalid && (studentForm.controls.casteCategoryId.dirty || studentForm.controls.casteCategoryId.touched)">
+                    <div *ngIf="studentForm.controls.casteCategoryId.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('casteCategoryId',studentForm.controls.casteCategoryId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- nationality -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Nationality</div>
+
+                <p-dropdown [options]="nationalities" [(ngModel)]="selectedNationality" optionLabel="name"
+                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Nationality"
+                    class="pDropdown pDropdown300px" formControlName="nationality" (onChange)="onNationality($event)">
+                    <ng-template let-nationality pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ nationality.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.nationality.invalid && (studentForm.controls.nationality.dirty || studentForm.controls.nationality.touched)">
+                    <div *ngIf="studentForm.controls.nationality.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('nationality',studentForm.controls.nationality.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- nativeLanguageId -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Native Language</div>
+
+                <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="name"
+                    [filter]="true" [filterFields]="['name']" [showClear]="true"
+                    placeholder="Select Native Language" class="pDropdown pDropdown300px"
+                    formControlName="nativeLanguageId" (onChange)="onLanguage($event)">
+                    <ng-template let-language pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ language.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.nativeLanguageId.invalid && (studentForm.controls.nativeLanguageId.dirty || studentForm.controls.nativeLanguageId.touched)">
+                    <div *ngIf="studentForm.controls.nativeLanguageId.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('nativeLanguageId',studentForm.controls.nativeLanguageId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- religionId -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Religion</div>
+
+                <p-dropdown [options]="religions" [(ngModel)]="selectedReligion" optionLabel="name"
+                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Religion"
+                    class="pDropdown pDropdown300px" formControlName="religionId" (onChange)="onReligion($event)">
+                    <ng-template let-religion pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ religion.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.religionId.invalid && (studentForm.controls.religionId.dirty || studentForm.controls.religionId.touched)">
+                    <div *ngIf="studentForm.controls.religionId.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('religionId',studentForm.controls.religionId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- genderId -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Gender</div>
+
+                <p-dropdown [options]="genders" [(ngModel)]="selectedGender" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Gender"
+                    class="pDropdown pDropdown300px" formControlName="genderId" (onChange)="onGender($event)">
+                    <ng-template let-gender pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{ gender.name }} </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.genderId.invalid && (studentForm.controls.genderId.dirty || studentForm.controls.genderId.touched)">
+                    <div *ngIf="studentForm.controls.genderId.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('genderId',studentForm.controls.genderId.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- transferStudents -->
+
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Transfer Student</div>
+                <p-dropdown [options]="transferStudents" [(ngModel)]="selectedTransferStudents" optionLabel="statusName"
+                    [filter]="true" filterBy="statusName" [showClear]="true" placeholder="Select Status"
+                    class="pDropdown pDropdown300px" formControlName="isTransferStudent">
+                    <ng-template let-status pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{status.statusName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.isTransferStudent.invalid && (studentForm.controls.isTransferStudent.dirty || studentForm.controls.isTransferStudent.touched)">
+                    <div *ngIf="studentForm.controls.isTransferStudent.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('isTransferStudent',studentForm.controls.isTransferStudent.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- admissionStatus -->
+
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Admission Status</div>
+                <p-dropdown [options]="admissionStatus" [(ngModel)]="selectedAdmissionStatus" optionLabel="statusName"
+                    [filter]="true" filterBy="statusName" [showClear]="true" placeholder="Select Status"
+                    class="pDropdown pDropdown300px" formControlName="admissionStatusId">
+                    <ng-template let-status pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{status.statusName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.admissionStatusId.invalid && (studentForm.controls.admissionStatusId.dirty || studentForm.controls.admissionStatusId.touched)">
+                    <div *ngIf="studentForm.controls.admissionStatusId.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('admissionStatusId',studentForm.controls.admissionStatusId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- requiresBooks -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Requires Books</div>
+                <p-dropdown [options]="requiresBooks" [(ngModel)]="selectedRequiresBooks" optionLabel="statusName"
+                    [filter]="true" filterBy="statusName" [showClear]="true" placeholder="Select Status"
+                    class="pDropdown pDropdown300px" formControlName="requiresBooks">
+                    <ng-template let-status pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{status.statusName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.requiresBooks.invalid && (studentForm.controls.requiresBooks.dirty || studentForm.controls.requiresBooks.touched)">
+                    <div *ngIf="studentForm.controls.requiresBooks.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('requiresBooks',studentForm.controls.requiresBooks.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- requiresTransports -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Requires Transport</div>
+                <p-dropdown [options]="requiresTransports" [(ngModel)]="selectedRequiresTransports"
+                    optionLabel="statusName" [filter]="true" filterBy="statusName" [showClear]="true"
+                    placeholder="Select Status" class="pDropdown pDropdown300px" formControlName="requiresTransport">
+                    <ng-template let-status pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{status.statusName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.requiresTransport.invalid && (studentForm.controls.requiresTransport.dirty || studentForm.controls.requiresTransport.touched)">
+                    <div *ngIf="studentForm.controls.requiresTransport.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('requiresTransport',studentForm.controls.requiresTransport.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- requiresUniform -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">requiresUniform</div>
+                <p-dropdown [options]="requiresUniform" [(ngModel)]="selectedRequiresUniform" optionLabel="statusName"
+                    [filter]="true" filterBy="statusName" [showClear]="true" placeholder="Select Status"
+                    class="pDropdown pDropdown300px" formControlName="requiresUniform">
+                    <ng-template let-status pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{status.statusName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.requiresUniform.invalid && (studentForm.controls.requiresUniform.dirty || studentForm.controls.requiresUniform.touched)">
+                    <div *ngIf="studentForm.controls.requiresUniform.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('requiresUniform',studentForm.controls.requiresUniform.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="upload-container">
+                <h3>Upload Student Image</h3>
+
+                <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+                <button (click)="onUpload()">Upload</button>
+
+                <div *ngIf="previewUrl" class="preview">
+                    <h4>Preview:</h4>
+                    <img [src]="previewUrl" alt="Preview" />
+                </div>
+
+                <p *ngIf="message" class="upload-message">
+                    {{ message }}
+                </p>
+            </div> -->
+
+            <div>
+                <h3>Profile Photo</h3>
+
+                <!-- Upload box -->
+                <div class="upload-box" (click)="fileInput.click()">
+                    <ng-container *ngIf="!previewUrl">
+                        <i class="fa fa-camera"></i>
+                        <p>Upload Photo</p>
+                    </ng-container>
+                    <img *ngIf="previewUrl" [src]="previewUrl" alt="Profile Photo" />
+                </div>
+
+                <!-- Hidden file input -->
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden />
+
+                <!-- Remove button -->
+                <button class="remove-btn" *ngIf="previewUrl" (click)="removePhoto()">
+                    Remove Photo
+                </button>
+            </div>
+
+             <!-- modeOfRelation -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">modeOfRelation</div>
+                <p-dropdown [options]="modeOfRelations" [(ngModel)]="selectedModeOfRelation" optionLabel="name"
+                    [filter]="true" filterBy="name" [showClear]="true" placeholder="Select Status"
+                    class="pDropdown pDropdown300px" formControlName="modeOfRelation">
+                    <ng-template let-status pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{status.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.modeOfRelation.invalid && (studentForm.controls.modeOfRelation.dirty || studentForm.controls.modeOfRelation.touched)">
+                    <div *ngIf="studentForm.controls.modeOfRelation.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('modeOfRelation',studentForm.controls.modeOfRelation.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- parentName -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Parent Name</div>
+                <input type="text" pInputText [(ngModel)]="parentName" class="pinputText pinputText300px"
+                    formControlName="parentName" />
+                <div
+                    *ngIf="studentForm.controls.parentName.invalid && (studentForm.controls.parentName.dirty || studentForm.controls.parentName.touched)">
+                    <div *ngIf="studentForm.controls.parentName.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('parentName',studentForm.controls.parentName.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- parentMobileNumber -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Parent Mobile Number</div>
+                <input type="text" pInputText [(ngModel)]="parentMobileNumber" class="pinputText pinputText300px"
+                    formControlName="parentMobileNumber" />
+                <div
+                    *ngIf="studentForm.controls.parentMobileNumber.invalid && (studentForm.controls.parentMobileNumber.dirty || studentForm.controls.parentMobileNumber.touched)">
+                    <div *ngIf="studentForm.controls.parentMobileNumber.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('parentMobileNumber',studentForm.controls.parentMobileNumber.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- parentEmail -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Parent Email</div>
+                <input type="text" pInputText [(ngModel)]="parentEmail" class="pinputText pinputText300px"
+                    formControlName="parentEmail" />
+                <div
+                    *ngIf="studentForm.controls.parentEmail.invalid && (studentForm.controls.parentEmail.dirty || studentForm.controls.parentEmail.touched)">
+                    <div *ngIf="studentForm.controls.parentEmail.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('parentEmail',studentForm.controls.parentEmail.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- view only attributes start -->
+
+
+
+            <div class="textboxComponent mt5 mr18 mh70" *ngIf="action=='view'">
+                <div class="textboxName">Created By</div>
+                <input type="text" pInputText class="pinputText pinputText300px" [value]="editStudent?.createdBy"
+                    disabled />
+            </div>
+
+            <div class="textboxComponent mt5 mr18 mh70" *ngIf="action=='view'">
+                <div class="textboxName">Created At</div>
+                <input type="text" pInputText class="pinputText pinputText300px" [value]="editStudent?.createdAt"
+                    disabled />
+            </div>
+
+            <div class="textboxComponent mt5 mr18 mh70" *ngIf="action=='view'">
+                <div class="textboxName">Updated By</div>
+                <input type="text" pInputText class="pinputText pinputText300px" [value]="editStudent?.updatedBy"
+                    disabled />
+            </div>
+
+            <div class="textboxComponent mt5 mr18 mh70" *ngIf="action=='view'">
+                <div class="textboxName">Updated At</div>
+                <input type="text" pInputText class="pinputText pinputText300px" [value]="editStudent?.updatedAt"
+                    disabled />
+            </div>
+            <!-- view only attributes end -->
+
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!studentForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    (click)="onSubmit()" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!studentForm.valid || !showUpdateButton" (click)="onEdit()"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('admin-config/student')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

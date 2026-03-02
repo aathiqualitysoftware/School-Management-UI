@@ -1,0 +1,20 @@
+<!-- login.component.html -->
+<div class="login-page">
+  <div class="overlay">
+    <div class="login-options">
+      <label class="login-card" *ngFor="let type of loginTypes">
+        <input
+          type="radio"
+          name="login-type"
+          [value]="type.value"
+          [(ngModel)]="selectedType"
+          (change)="onSelect(type.value)"
+        />
+        <div class="card-content">
+          <img [src]="type.icon" [alt]="type.value" />
+          <span>{{ type.label }}</span>
+        </div>
+      </label>
+    </div>
+  </div>
+</div>

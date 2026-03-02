@@ -1,0 +1,132 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Exam Management</div>
+    <div class="gilroyNormal s13 fw600">Exam</div>
+
+    <div class="whiteDivision">
+        <div class="dropdownComponent">
+            <div class="dropdownName">Academic Year</div>
+            <p-dropdown class="pDropdown" [options]="years" [(ngModel)]="selectedYear"
+                placeholder="Select Academic Year" optionLabel="name" filterBy="name" [filter]="true"
+                [showClear]="true">
+                <ng-template let-yrs pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{yrs.name}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="disp-inline-block v-align-bottom">
+            <div [class]="selectedYear ? 'active-btn ml15' : 'inactive-btn ml15'"
+                (click)=" selectedYear ? getdatbyacademicyear() : ''"
+                [style.width]="enableSearchLoading ? '130px' : '90px'" style="transition: width .5s"
+                [style.cursor]="enableSearchLoading ? 'not-allowed' : ''">
+                <span *ngIf="!enableSearchLoading">Search</span>
+                <span *ngIf="enableSearchLoading"><i class="pi pi-spin pi-spinner"
+                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Searching...</span>
+            </div>
+            <div [class]="selectedYear ? 'reset-btn ml10 reset-btn-enabled' : 'reset-btn ml10'"
+                (click)="selectedYear ? resetFilter() : ''">Reset</div>
+        </div>
+    </div>
+    <!-- min-height: calc(100vh - 210px);  -->
+    <div class="whiteDivision" style="margin-top: 18px; padding-bottom: 0px;">
+        <div class="search-n-heading-component">
+            <div class="disp-inline-block">
+                <div class="gilroyNormal s13 fw600 mb7">Exam List</div>
+                <div class="gilroyNormal fontLightGrey s11">
+                    Total {{exams.length}} Exams
+                </div>
+            </div>
+            <div class="disp-inline-block float-r">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText class="inputtext-search" placeholder="Search by Exam Name"
+                        [(ngModel)]="searchText" (ngModelChange)="applyGlobalFilter(searchText, 'contains')" />
+                </span>
+                <div class="success-btn ml12 success-btn-enabled" (click)="createExam()">
+                    <i class="pi pi-plus"></i>
+                    Add New Exam
+                </div>
+            </div>
+        </div>
+        <div class="grid-table">
+            <p-table #dt1 [value]="exams" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData" [paginator]="true"
+                [rows]="tableRows" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                [globalFilterFields]="['uniqueExamCode','subjectName','className','sectionName','formattedStartDate','formattedEndDate','typeName']"
+                styleClass="p-datatable-sm table-generic-style">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" pSortableColumn="uniqueExamCode"> Exam Name<p-sortIcon
+                                field="uniqueExamCode"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="subjectName"> Subject<p-sortIcon
+                                field="subjectName"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="className"> Class<p-sortIcon field="className"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="sectionName"> Section<p-sortIcon
+                                field="sectionName"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="formattedStartDate"> Start Date<p-sortIcon
+                                field="formattedStartDate"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="formattedEndDate"> End Date<p-sortIcon
+                                field="formattedEndDate"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="typeName"> Type<p-sortIcon field="typeName"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="action"> Action<p-sortIcon field="action"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-exam let-i="rowIndex">
+                    <tr>
+                        <td>{{exam.uniqueExamCode}}</td>
+                        <td>{{exam.subjectName}}</td>
+                        <td>{{exam.className}}</td>
+                        <td>{{exam.sectionName}}</td>
+                        <td>{{exam.formattedStartDate }}</td>
+                        <td>{{exam.formattedEndDate }}</td>
+                        <td>{{exam.typeName}}</td>
+                        <td class="editArea" style="text-align: center;">
+                            <span (click)="viewContent(exam)">
+                                <i class="pi pi-external-link editiconSize s8 mr3"></i>
+                                <span class="v-align-mid fw600 ">View</span>
+                            </span>
+                            <span (click)="editContent(exam)">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-file-edit editiconSize fontBlack"></i>
+                                <span class="v-align-mid fw600 fontBlack">Edit</span>
+                            </span>
+                            <span (click)="confirm($event, exam)">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-trash editiconSize fontRed"></i>
+                                <span class="v-align-mid fw600 fontRed">Delete</span>
+                            </span>
+                            <div class="card flex justify-content-center gap-2">
+                                <p-confirmPopup styleClass="confirmpopup">
+                                    <ng-template pTemplate="headless" let-message let-test>
+                                        <div class="gilroyNormal s12 mb12">{{ message.message }}</div>
+                                        <div class="flex align-items-center gap-2 mt-3">
+                                            <div (click)="!deleteLoading ? confirmPopup() : ''"
+                                                class="success-btn deleteConfirmBtn success-btn-enabled"
+                                                [style.width]="deleteLoading ? '130px' : ''"
+                                                [style.cursor]="deleteLoading ? 'not-allowed' : 'pointer'">
+                                                <i *ngIf="deleteLoading" class="pi pi-spin pi-spinner"
+                                                    style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>{{deleteCnfText}}
+                                            </div>
+                                            <div (click)="cancelPopup()" class="cancel-btn ml10">Cancel</div>
+                                        </div>
+                                    </ng-template>
+                                </p-confirmPopup>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

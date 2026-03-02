@@ -1,0 +1,7 @@
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="150" cy="150" r="150" fill="#EAF3FA"/>
+  <ellipse cx="150" cy="150" rx="130" ry="130" fill="white"/>
+  <path d="M70 150a40 40 0 0 1 40-40h0a20 20 0 0 1 20 20v60a40 40 0 0 1-40 40h0a20 20 0 0 1-20-20v-60z" fill="#4EC3E0"/>
+  <path d="M230 150a40 40 0 0 0-40-40h0a20 20 0 0 0-20 20v60a40 40 0 0 0 40 40h0a20 20 0 0 0 20-20v-60z" fill="#FF6B6B"/>
+  <path d="M110 150c0-22 18-40 40-40s40 18 40 40-18 40-40 40-40-18-40-40z" fill="#44444F"/>
+</svg>

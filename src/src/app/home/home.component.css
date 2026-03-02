@@ -1,0 +1,167 @@
+.leftSpan {
+  width: 16.5%;
+  /* height: 100vh; */
+  display: inline-block;
+  vertical-align: top;
+}
+
+.leftNavBar {
+  background-color: #F8F6F8;
+  margin-right: 16px;
+  border-radius: 0px 22px 22px 0px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  height: 63vh;
+  overflow: auto;
+}
+
+.headerArea {
+  padding-top: 25px;
+  padding-left: 8px;
+  height: 80px;
+}
+
+.contentArea {
+  /* min-height: calc(100vh - 80px); */
+  background-color: #F8F6F8;
+  border-radius: 22px 0px 0px 0px;
+}
+
+.leftHeadingArea {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.rightIconsArea {
+  display: inline-block;
+  vertical-align: top;
+  float: right;
+  padding-right: 22px;
+}
+
+.iconArea {
+  width: 33px;
+  height: 33px;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0px 12px;
+  text-align: center;
+  border-radius: 50px;
+}
+
+.iconArea:hover {
+  font-weight: 600;
+  color: #860063;
+  filter: invert(11%) sepia(60%) saturate(7034%) hue-rotate(306deg) brightness(79%) contrast(106%);
+  cursor: pointer;
+  box-shadow: 0px 6px 15px #00000029;
+  transition: box-shadow .25s;
+}
+
+.iconArea:active {
+  box-shadow: none;
+  transition: box-shadow .25s;
+}
+
+.nav {
+  position: relative;
+}
+
+.activeNav {
+  position: relative;
+  font-weight: 600 !important;
+  color: #860063 !important;
+  cursor: pointer;
+}
+
+.activeNav .navIcon {
+  filter: invert(11%) sepia(60%) saturate(7034%) hue-rotate(306deg) brightness(79%) contrast(106%);
+}
+
+.leftOrange {
+  position: absolute;
+  left: .5px;
+  height: 48px;
+  width: 5.5px;
+  background: #F78C2A;
+  top: 0px;
+  border-radius: 10px;
+}
+
+.nav:hover {
+  font-weight: 600;
+  color: #860063;
+  cursor: pointer;
+}
+
+.nav:hover .navIcon {
+  filter: invert(11%) sepia(60%) saturate(7034%) hue-rotate(306deg) brightness(79%) contrast(106%);
+}
+
+.rightSpan {
+  width: 83.5%;
+  /* height: 100vh; */
+  display: inline-block;
+  vertical-align: top;
+}
+
+.centerText {
+  display: flex;
+  align-items: center;
+}
+
+.footerArea {
+  display: flex;
+  /* places items side by side */
+  align-items: center;
+  /* vertically center image + text */
+  justify-content: center;
+  /* center everything horizontally */
+  padding: 10px;
+  /* background-color: #860063; */
+}
+
+.footerArea img {
+  margin-right: 10px;
+  /* space between logo and text */
+}
+
+.footerText {
+  font-weight: bold;
+  color: #FF9800;
+  /* orange accent */
+  font-size: 14px;
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.pageWrapper {
+  display: flex;
+  flex: 1;
+}
+
+.leftSpan {
+  width: 16.5%;
+}
+
+.rightSpan {
+  width: 83.5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentArea {
+  flex: 1;
+  background-color: #F8F6F8;
+  border-radius: 22px 0px 0px 0px;
+}

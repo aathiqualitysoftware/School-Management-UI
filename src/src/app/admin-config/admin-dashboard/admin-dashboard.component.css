@@ -1,0 +1,64 @@
+/* Summary cards styling */
+.summary-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    flex: 1;
+    border-radius: 8px;
+    padding: 15px;
+    margin-left: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    /* text color for contrast */
+}
+
+/* Specific card colors */
+.card.students-card {
+    background-color: #4CAF50;
+    /* green */
+}
+
+.card.staff-card {
+    background-color: #2196F3;
+    /* blue */
+}
+
+.card.fee-card {
+    background-color: #FF9800;
+    /* orange */
+}
+
+.card.exams-card {
+    background-color: #9C27B0;
+    /* purple */
+}
+
+/* Charts stacked vertically */
+.charts-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chart-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    display: flex;
+     gap: 50px;
+    /* makes them appear on the same line */
+}
+
+.container div {
+    padding: 10px;
+   margin-left: 15px;
+    background: #fff;
+}

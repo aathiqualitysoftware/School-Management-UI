@@ -1,0 +1,28 @@
+<!-- timetable.component.html -->
+<div class="whiteDivision timetable-wrapper">
+  <div class="header">
+    <div class="title">Time Table</div>
+    <div class="subtitle">Class : {{ className }}</div>
+  </div>
+
+  <table class="timetable">
+    <thead>
+      <tr>
+        <th>Day of the Week</th>
+        <th *ngFor="let i of [].constructor(11); let idx = index"
+            [ngClass]="{ 'lunch-cell': idx === timeTableList[0]?.afterLunchPeriod }">
+          {{ idx === timeTableList[0]?.afterLunchPeriod ? 'Lunch' : 'Period ' + (idx < timeTableList[0]?.afterLunchPeriod ? idx+1 : idx) }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let day of timeTableList">
+        <td class="day-cell">{{ day.weekName }}</td>
+        <td *ngFor="let subject of getSubjectsWithLunch(day); let i = index"
+            [ngClass]="{ 'lunch-cell': i === day.afterLunchPeriod }">
+          {{ subject }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

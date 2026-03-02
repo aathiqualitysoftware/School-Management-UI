@@ -1,0 +1,132 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/portal-config')">Subject Management </span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Subject Management</span>
+        <span *ngIf="action == 'edit'">Edit Subject Management</span>
+        <span *ngIf="action == 'view'">View Subject Management</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create new Subject Management</span>
+        <span *ngIf="action == 'edit'">Edit existing Subject Management</span>
+        <span *ngIf="action == 'view'">View existing Subject Management</span>
+    </div>
+
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create new Subject
+            Management</div>
+        <form [formGroup]="subjectForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Class</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="Classes" formControlName="class"
+                    optionLabel="name" filterBy="name" placeholder="Select Class" [filter]="true"
+                    [showClear]="true" (onChange)="onClassChange()">
+                    <ng-template let-cls pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{cls.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="subjectForm.controls.class.invalid && (subjectForm.controls.class.dirty || subjectForm.controls.class.touched)">
+                    <div *ngIf="subjectForm.controls.class.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('class',subjectForm.controls.class.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Section</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="filteredSections" formControlName="section"
+                    optionLabel="sectionName" filterBy="sectionName" placeholder="Select Section" [filter]="true"
+                    [showClear]="true">
+                    <ng-template let-sec pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{sec.sectionName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="subjectForm.controls.section.invalid && (subjectForm.controls.section.dirty || subjectForm.controls.section.touched)">
+                    <div *ngIf="subjectForm.controls.section.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('section',subjectForm.controls.section.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Subject</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="subjects" formControlName="subject"
+                    optionLabel="name" filterBy="name" placeholder="Select Subject" [filter]="true" [showClear]="true">
+                    <ng-template let-sub pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{sub.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="subjectForm.controls.subject.invalid && (subjectForm.controls.subject.dirty || subjectForm.controls.subject.touched)">
+                    <div *ngIf="subjectForm.controls.subject.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('subject',subjectForm.controls.subject.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Subject Type</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="subjecttypes" formControlName="subjecttype"
+                    optionLabel="name" filterBy="name" placeholder="Select Subject Type" [filter]="true"
+                    [showClear]="true">
+                    <ng-template let-sub pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{sub.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="subjectForm.controls.subjecttype.invalid && (subjectForm.controls.subjecttype.dirty || subjectForm.controls.subjecttype.touched)">
+                    <div *ngIf="subjectForm.controls.subjecttype.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('subjecttype',subjectForm.controls.subjecttype.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Assigned Teacher</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="teachers" formControlName="teacher"
+                    optionLabel="firstName" filterBy="firstName" placeholder="Select Staff" [filter]="true"
+                    [showClear]="true">
+                    <ng-template let-sub pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{sub.firstName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="subjectForm.controls.teacher.invalid && (subjectForm.controls.teacher.dirty || subjectForm.controls.teacher.touched)">
+                    <div *ngIf="subjectForm.controls.teacher.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('teacher',subjectForm.controls.teacher.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!subjectForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!subjectForm.valid || !showUpdateButton"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('home/portal-config')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/portal-config')">Role</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Role</span>
+        <span *ngIf="action == 'edit'">Edit Role</span>
+        <span *ngIf="action == 'view'">View Role</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create new Role</span>
+        <span *ngIf="action == 'edit'">Edit existing Role</span>
+        <span *ngIf="action == 'view'">View existing Role</span>
+    </div>
+
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create new Role</div>
+        <form [formGroup]="roleForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Role Name</div>
+                <input type="text" class="pinputText pinputText300px" pInputText formControlName="name">
+                <div
+                    *ngIf="roleForm.controls.name.invalid && (roleForm.controls.name.dirty || roleForm.controls.name.touched)">
+                    <div *ngIf="roleForm.controls.name.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('name',roleForm.controls.name.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Category</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="categories" formControlName="category"
+                    optionLabel="name" filterBy="name" placeholder="Select Category" [filter]="true" [showClear]="true">
+                    <ng-template let-cat pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{cat.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="roleForm.controls.category.invalid && (roleForm.controls.category.dirty || roleForm.controls.category.touched)">
+                    <div *ngIf="roleForm.controls.category.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('category',roleForm.controls.category.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!roleForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!roleForm.valid || !showUpdateButton"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('home/portal-config')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

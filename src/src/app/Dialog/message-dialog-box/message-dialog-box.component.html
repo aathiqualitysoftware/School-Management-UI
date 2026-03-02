@@ -1,0 +1,185 @@
+<div class="filter-div p15 pl25 gilroyNormal" *ngIf="data.section ==='filter'">
+
+  <div style="height: 54vh; overflow-y: scroll">
+    <div class="flex-row  radio-section">
+      <div class="title pr-1">
+        Sort By Invoice Price
+      </div>
+      <div class="pl-1">
+        <p-radioButton name="sortOptions" value="1" [(ngModel)]="selectedSort" label="Low to High"
+          class="radio radiRight"></p-radioButton>
+        <p-radioButton name="sortOptions" value="2" [(ngModel)]="selectedSort" label="High to Low"
+          class="radio"></p-radioButton>
+
+      </div>
+
+    </div>
+
+    <div style="padding: 16px;">
+      <div style="padding: 8px;">
+        <div class="flex-row check-box">
+          <p-checkbox [binary]="true" class="custom-checkbox" label="Vendor" [(ngModel)]="filterVal.vendorAll"
+            (onChange)="selectAll($event, 'vendor')" color="primary"></p-checkbox>
+          <!-- <div class="pl-1">Vendor</div> -->
+        </div>
+
+        <div class="parent row" style="margin: 2px;">
+          <div class="col-value" *ngFor="let val of data.data.vendor">
+            <div class="row-value" [ngClass]="{'row-checked': (filterVal.vendor && filterVal.vendor[val])}"
+              (click)="slectVal(val,'vendor')">{{val}}</div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div style="padding: 8px;">
+        <div class="flex-row check-box">
+          <p-checkbox [binary]="true" class="custom-checkbox" label="Plant" [(ngModel)]="filterVal.plantAll"
+            (onChange)="selectAll($event, 'plant')" color="primary"></p-checkbox>
+          <!-- <div class="pl-1">Plant</div> -->
+
+
+        </div>
+
+        <div class="  parent" style="margin: 2px;">
+          <div class="col-value" *ngFor="let val of data.data.plant">
+            <div class="row-value" [ngClass]="{'row-checked': (filterVal.plant && filterVal.plant[val])}"
+              (click)="slectVal(val,'plant')">{{val}}</div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div style="padding: 8px;">
+        <div class="flex-row check-box">
+          <p-checkbox [binary]="true" class="custom-checkbox" label="Material" [(ngModel)]="filterVal.materialAll"
+            (onChange)="selectAll($event, 'material')" color="primary"></p-checkbox>
+          <!-- <div class="pl-1">Material</div> -->
+
+
+        </div>
+
+        <div class="parent" style="margin: 2px;">
+          <div class="col-value " *ngFor="let val of data.data.material">
+            <div class="row-value" [ngClass]="{'row-checked': (filterVal.material && filterVal.material[val])}"
+              (click)="slectVal(val,'material')">{{val}}</div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div style="padding: 8px;">
+        <div class="flex-row check-box">
+          <p-checkbox [binary]="true" class="custom-checkbox" label="Quality Grade" [(ngModel)]="filterVal.qualityAll"
+            (onChange)="selectAll($event, 'quality')" color="primary"></p-checkbox>
+          <!-- <div class="pl-1">Quality Grade</div> -->
+
+
+        </div>
+
+        <div class="parent" style="margin: 2px;">
+          <div class="col-value" *ngFor="let val of data.data.quality">
+            <div class="row-value" [ngClass]="{'row-checked': (filterVal.quality && filterVal.quality[val])}"
+              (click)="slectVal(val,'quality')">{{val}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 8px;">
+        <div class="flex-row check-box">
+          <div class="pl-1">Others</div>
+
+
+        </div>
+
+        <div class="parent" style="margin: 2px;">
+          <div class="col-value" *ngFor="let val of data.data.others">
+            <div class="row-value" [ngClass]="{'row-checked': (filterVal.others && filterVal.others[val])}"
+              (click)="slectVal(val,'others')">{{val}}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer-dialog" *ngIf="data.section ==='filter'">
+    <div class="footer-button">
+      <button class="bt-clear-ft" (click)="onClearFilter()">Clear</button>
+      <button class="bt-clear-apply" (click)="onApplyFilter('filter')">Apply</button>
+    </div>
+
+  </div>
+
+
+</div>
+
+<div class=" p15 pl25 gilroyNormal" *ngIf="data?.section=='timeline'">
+
+  <div class="dotted-border">
+    <div class="section-detail-col flex-row-data" style="padding:16px">
+      <!-- <div > -->
+      <div class="muted-title">GRN</div>
+      <div class="muted-title">:</div>
+      <div class="sub-title pl-1">{{data.data.grnType}} - {{data.data.grnNumber}}</div>
+    </div>
+
+  </div>
+
+  <div class="dotted-border">
+    <div class="section-detail-col flex-row-data" style="padding:16px">
+      <div class="muted-title">Error</div>
+      <div class="muted-title">:</div>
+
+      <div class="sub-title pl-1 error">
+        <span> {{data.data.errorMessage}} </span>
+        <span> {{data.data.paymentErrorMessage}} </span>
+        <span> {{data.data.clearingErrorMessage}} </span>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="progress-bar-container" style="height: 50px !important;">
+
+    <ul>
+      <li class="step step01">
+        <span class="pi pi-check-circle arrow checked-arrow " *ngIf="invoiceStatus" style="font-size: 2rem"> </span>
+        <span class="pi pi-times-circle arrow error-arrow " *ngIf="!invoiceStatus" style="font-size: 2rem"> </span>
+        <div class="muted-text-small">Invoice</div>
+      </li>
+      <li class="step step02">
+        <span class="pi pi-check-circle arrow checked-arrow " *ngIf="paymentStatus && !paymentNA"
+          style="font-size: 2rem"> </span>
+        <span class="pi pi-times-circle arrow error-arrow " *ngIf="!paymentStatus && !paymentNA"
+          style="font-size: 2rem"> </span>
+        <div class="muted-text-small" *ngIf="!paymentNA">Payment</div>
+      </li>
+      <li class="step step03">
+        <span class="pi pi-check-circle arrow checked-arrow " *ngIf="clearingStatus" style="font-size: 2rem"> </span>
+        <span class="pi pi-times-circle arrow error-arrow " *ngIf="!clearingStatus" style="font-size: 2rem"> </span>
+        <div class="muted-text-small ">Transaction</div>
+      </li>
+    </ul>
+
+    <div id="line" style="margin-top: 10px;">
+      <div id="line-progress" [style.width]="linePercentage"></div>
+    </div>
+  </div>
+</div>
+
+<div class=" p15 pl25 gilroyNormal" *ngIf="data?.section=='normal'">
+  <div class="dotted-border">
+    <div class="normal-title-tmp" style="justify-content: center !important;"> {{data.text}} </div>
+    <div class="button-card">
+      <div *ngIf="data.uploadRecord">
+        <button mat-button class="button" (click)="cancel()">CANCEL</button>
+        <button class="button confirm" (click)="onClickUpload('save')">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+</div>

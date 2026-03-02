@@ -1,0 +1,92 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div class="p15 pl25">
+    <div class="gilroyNormal s13 fw600">Master Type</div>
+
+    <div class="whiteDivision" style="min-height: calc(100vh - 210px); margin-top: 18px; padding-bottom: 0px;">
+        <div class="search-n-heading-component">
+            <div class="disp-inline-block">
+                <div class="gilroyNormal s13 fw600 mb7">Master Type List</div>
+                <div class="gilroyNormal fontLightGrey s11">
+                    Total {{mastertypes.length}} Master Types
+                </div>
+            </div>
+            <div class="disp-inline-block float-r">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText class="inputtext-search" placeholder="Search by Master Type Name"
+                        [(ngModel)]="searchText" (ngModelChange)="applyGlobalFilter(searchText, 'contains')" />
+                </span>
+                <div class="success-btn ml12 success-btn-enabled" (click)="createMasterType()">
+                    <i class="pi pi-plus"></i>
+                    Add New Master Type
+                </div>
+            </div>
+
+
+            <div class="grid-table">
+                <p-table #dt1 [value]="mastertypes" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData"
+                    [paginator]="true" [rows]="tableRows" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                    [globalFilterFields]="['masterTypeId','typeName','Active']"
+                    styleClass="p-datatable-sm table-generic-style">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th scope="col" pSortableColumn="masterTypeId"> Master Type Id<p-sortIcon
+                                    field="masterTypeId"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="typeName"> Master Type Name<p-sortIcon
+                                    field="typeName"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="Active"> Active Status<p-sortIcon
+                                    field="Active"></p-sortIcon>
+                            </th>
+                            <th scope="col" pSortableColumn="action"> Action<p-sortIcon field="action"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-type let-i="rowIndex">
+                        <tr>
+                            <td>{{type.masterTypeId}}</td>
+                            <td>{{type.typeName}}</td>
+                            <td>{{type.Active}}</td>
+                            <td class="editArea" style="text-align: center;">
+                                <span (click)="viewContent(type)">
+                                    <i class="pi pi-external-link editiconSize s8 mr3"></i>
+                                    <span class="v-align-mid fw600 ">View</span>
+                                </span>
+                                <span (click)="editContent(type)">
+                                    <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                    <i class="pi pi-file-edit editiconSize fontBlack"></i>
+                                    <span class="v-align-mid fw600 fontBlack">Edit</span>
+                                </span>
+                                <span (click)="confirm($event, type)">
+                                    <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                    <i class="pi pi-trash editiconSize fontRed"></i>
+                                    <span class="v-align-mid fw600 fontRed">Delete</span>
+                                </span>
+                                <div class="card flex justify-content-center gap-2">
+                                    <p-confirmPopup styleClass="confirmpopup">
+                                        <ng-template pTemplate="headless" let-message let-test>
+                                            <div class="gilroyNormal s12 mb12">{{ message.message }}</div>
+                                            <div class="flex align-items-center gap-2 mt-3">
+                                                <div (click)="!deleteLoading ? confirmPopup() : ''"
+                                                    class="success-btn deleteConfirmBtn success-btn-enabled"
+                                                    [style.width]="deleteLoading ? '130px' : ''"
+                                                    [style.cursor]="deleteLoading ? 'not-allowed' : 'pointer'">
+                                                    <i *ngIf="deleteLoading" class="pi pi-spin pi-spinner"
+                                                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>{{deleteCnfText}}
+                                                </div>
+                                                <div (click)="cancelPopup()" class="cancel-btn ml10">Cancel</div>
+                                            </div>
+                                        </ng-template>
+                                    </p-confirmPopup>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>
