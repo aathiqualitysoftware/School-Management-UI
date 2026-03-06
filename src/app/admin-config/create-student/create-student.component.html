@@ -57,6 +57,27 @@
                     </div>
                 </div>
             </div>
+            <!-- EducationType -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Education Type</div>
+                <p-dropdown [options]="educationTypes" [(ngModel)]="selectedEducationType"
+                    optionLabel="name" [filter]="true" [filterFields]="['name']" [showClear]="true"
+                    placeholder="Select EducationType" class="pDropdown pDropdown300px"
+                     formControlName="educationTypeId"
+                    (onChange)="onEducationType($event)">
+                    <ng-template let-section pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{section.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentForm.controls.educationTypeId.invalid && (studentForm.controls.educationTypeId.dirty || studentForm.controls.educationTypeId.touched)">
+                    <div *ngIf="studentForm.controls.educationTypeId.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('educationTypeId',studentForm.controls.educationTypeId.errors)}}
+                    </div>
+                </div>
+            </div>
             <!-- firstName -->
             <div class="textboxComponent mt5 mr18 mh70">
                 <div class="textboxName">First Name</div>
@@ -103,6 +124,18 @@
                     <div *ngIf="studentForm.controls.permanentAddress.errors!= null"
                         class="gilroyNormal fontRed s11 mt5">
                         {{getErrorMessage('permanentAddress',studentForm.controls.permanentAddress.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- pincode -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">pincode</div>
+                <input type="text" pInputText [(ngModel)]="pincode" class="pinputText pinputText300px"
+                    formControlName="pincode" />
+                <div
+                    *ngIf="studentForm.controls.pincode.invalid && (studentForm.controls.pincode.dirty || studentForm.controls.pincode.touched)">
+                    <div *ngIf="studentForm.controls.pincode.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('pincode',studentForm.controls.pincode.errors)}}
                     </div>
                 </div>
             </div>
@@ -195,8 +228,8 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Blood Group</div>
 
-                <p-dropdown [options]="bloodGroups" [(ngModel)]="selectedBloodGroup" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Blood Group"
+                <p-dropdown [options]="bloodGroups" [(ngModel)]="selectedBloodGroup" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Blood Group"
                     class="pDropdown pDropdown300px" formControlName="bloodGroupId" (onChange)="onBloodGroup($event)">
                     <ng-template let-bloodGroup pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
@@ -258,10 +291,9 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Native Language</div>
 
-                <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true"
-                    placeholder="Select Native Language" class="pDropdown pDropdown300px"
-                    formControlName="nativeLanguageId" (onChange)="onLanguage($event)">
+                <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Native Language"
+                    class="pDropdown pDropdown300px" formControlName="nativeLanguageId" (onChange)="onLanguage($event)">
                     <ng-template let-language pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
                             <div>{{ language.name }} </div>
@@ -280,8 +312,8 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Religion</div>
 
-                <p-dropdown [options]="religions" [(ngModel)]="selectedReligion" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Religion"
+                <p-dropdown [options]="religions" [(ngModel)]="selectedReligion" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Religion"
                     class="pDropdown pDropdown300px" formControlName="religionId" (onChange)="onReligion($event)">
                     <ng-template let-religion pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
@@ -436,7 +468,7 @@
             </div> -->
 
             <div>
-                <h3>Profile Photo</h3>
+                <h3>User Profile Photo</h3>
 
                 <!-- Upload box -->
                 <div class="upload-box" (click)="fileInput.click()">
@@ -449,16 +481,35 @@
 
                 <!-- Hidden file input -->
                 <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden />
-
                 <!-- Remove button -->
                 <button class="remove-btn" *ngIf="previewUrl" (click)="removePhoto()">
                     Remove Photo
                 </button>
             </div>
 
-             <!-- modeOfRelation -->
+            <div>
+                <h3>Student Certificate</h3>
+
+                <!-- Upload box -->
+                <div class="upload-box" (click)="fileInputStudentCertificate.click()">
+                    <ng-container *ngIf="!studentCertificateUrl">
+                        <i class="fa fa-camera"></i>
+                        <p>Upload Photo</p>
+                    </ng-container>
+                    <img *ngIf="studentCertificateUrl" [src]="studentCertificateUrl" alt="Student Certificate" />
+                </div>
+
+                <!-- Hidden file input -->
+                <input type="file" #fileInputStudentCertificate (change)="onFileSelectedStudentCertificate($event)" accept="image/*" hidden />
+                <!-- Remove button -->
+                <button class="remove-btn" *ngIf="studentCertificateUrl" (click)="removeStudentCertificate()">
+                    Remove Photo
+                </button>
+            </div>
+
+            <!-- modeOfRelation -->
             <div class="dropdownComponent mt5 mr18 mh70">
-                <div class="dropdownName">modeOfRelation</div>
+                <div class="dropdownName">Mode of Relation</div>
                 <p-dropdown [options]="modeOfRelations" [(ngModel)]="selectedModeOfRelation" optionLabel="name"
                     [filter]="true" filterBy="name" [showClear]="true" placeholder="Select Status"
                     class="pDropdown pDropdown300px" formControlName="modeOfRelation">
@@ -470,8 +521,7 @@
                 </p-dropdown>
                 <div
                     *ngIf="studentForm.controls.modeOfRelation.invalid && (studentForm.controls.modeOfRelation.dirty || studentForm.controls.modeOfRelation.touched)">
-                    <div *ngIf="studentForm.controls.modeOfRelation.errors!= null"
-                        class="gilroyNormal fontRed s11 mt5">
+                    <div *ngIf="studentForm.controls.modeOfRelation.errors!= null" class="gilroyNormal fontRed s11 mt5">
                         {{getErrorMessage('modeOfRelation',studentForm.controls.modeOfRelation.errors)}}
                     </div>
                 </div>
@@ -497,7 +547,8 @@
                     formControlName="parentMobileNumber" />
                 <div
                     *ngIf="studentForm.controls.parentMobileNumber.invalid && (studentForm.controls.parentMobileNumber.dirty || studentForm.controls.parentMobileNumber.touched)">
-                    <div *ngIf="studentForm.controls.parentMobileNumber.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                    <div *ngIf="studentForm.controls.parentMobileNumber.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
                         {{getErrorMessage('parentMobileNumber',studentForm.controls.parentMobileNumber.errors)}}
                     </div>
                 </div>
@@ -515,6 +566,68 @@
                     </div>
                 </div>
             </div>
+            <!-- parentAadhar -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Parent Aadhaar Card Number</div>
+                <input type="text" pInputText [(ngModel)]="parentAadhar" class="pinputText pinputText300px"
+                    formControlName="parentAadhar" />
+                <div
+                    *ngIf="studentForm.controls.parentAadhar.invalid && (studentForm.controls.parentAadhar.dirty || studentForm.controls.parentAadhar.touched)">
+                    <div *ngIf="studentForm.controls.parentAadhar.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('parentAadhar',studentForm.controls.parentAadhar.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- emergencyNumber -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Emergency Contact Number</div>
+                <input type="text" pInputText [(ngModel)]="emergencyNumber" class="pinputText pinputText300px"
+                    formControlName="emergencyNumber" />
+                <div
+                    *ngIf="studentForm.controls.emergencyNumber.invalid && (studentForm.controls.emergencyNumber.dirty || studentForm.controls.emergencyNumber.touched)">
+                    <div *ngIf="studentForm.controls.emergencyNumber.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('emergencyNumber',studentForm.controls.emergencyNumber.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- referalEmployeeId -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Referal Employee ID</div>
+                <input type="text" pInputText [(ngModel)]="referalEmployeeId" class="pinputText pinputText300px"
+                    formControlName="referalEmployeeId" />
+                <div
+                    *ngIf="studentForm.controls.referalEmployeeId.invalid && (studentForm.controls.referalEmployeeId.dirty || studentForm.controls.referalEmployeeId.touched)">
+                    <div *ngIf="studentForm.controls.referalEmployeeId.errors!= null"
+                        class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('referalEmployeeId',studentForm.controls.referalEmployeeId.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3>Parent Profile Photo</h3>
+
+                <!-- Upload box -->
+                <div class="upload-box" (click)="fileInputParent.click()">
+                    <ng-container *ngIf="!parentPreviewUrl">
+                        <i class="fa fa-camera"></i>
+                        <p>Upload Photo</p>
+                    </ng-container>
+                    <img *ngIf="parentPreviewUrl" [src]="parentPreviewUrl" alt="Profile Photo" />
+                </div>
+
+                <!-- Hidden file input -->
+                <input type="file" #fileInputParent (change)="onFileSelectedParent($event)" accept="image/*" hidden />
+
+                <!-- Remove button -->
+                <button class="remove-btn" *ngIf="parentPreviewUrl" (click)="removeParentPhoto()">
+                    Remove Photo
+                </button>
+            </div>
+
+            
+
             <!-- view only attributes start -->
 
 

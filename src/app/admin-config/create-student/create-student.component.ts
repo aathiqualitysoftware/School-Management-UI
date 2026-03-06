@@ -26,9 +26,15 @@ import { firstValueFrom } from 'rxjs';
 export class CreateStudentComponent implements OnInit {
 
   selectedFile: File | null = null;
+  selectedFileParent: File | null = null;
+  selectedFileStudentCertificate: File | null = null;
   message: string = '';
   previewUrl: any;
+  parentPreviewUrl: any;
+  studentCertificateUrl: any;
   studentImageId: any;
+  parentImageId: any;
+  studentTCImageId: any;
 
 
   masterData: any;
@@ -55,12 +61,19 @@ export class CreateStudentComponent implements OnInit {
   parentName: any = "";
   parentMobileNumber: any = "";
   parentEmail: any = "";
+  pincode: any = "";
+  emergencyNumber: any = "";
+  parentAadhar: any = "";
+  referalEmployeeId: any = "";
 
   classes: any[] = [];
   selectedClass: any;
 
   sections: any[] = [];
   selectedSection: any;
+
+  educationTypes: any[] = [];
+  selectedEducationType: any;
 
   academics: any[] = [];
   selectedAcademic: any;
@@ -112,7 +125,7 @@ export class CreateStudentComponent implements OnInit {
   showUpdateButton = false;
 
   studentForm = new FormGroup({
-    aadhaarCardNumber: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(45)]),
+    aadhaarCardNumber: new FormControl("", [Validators.required, Validators.minLength(12), Validators.maxLength(12)]),
     admissionNumber: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
     admissionStatusId: new FormControl({ value: "", disabled: false }, [Validators.required]),
     academicYearId: new FormControl({ value: "", disabled: false }, [Validators.required]),
@@ -139,6 +152,12 @@ export class CreateStudentComponent implements OnInit {
     parentName: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(45)]),
     parentMobileNumber: new FormControl("", [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
     parentEmail: new FormControl("", [Validators.required, Validators.email, Validators.maxLength(45)]),
+    pincode: new FormControl("", [Validators.minLength(6), Validators.maxLength(6), Validators.required]),
+    educationTypeId: new FormControl("", [Validators.required]),
+    referalEmployeeId: new FormControl(""),
+    emergencyNumber: new FormControl("", [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
+    parentAadhar: new FormControl("", [Validators.required, Validators.minLength(12), Validators.maxLength(12)]),
+
 
   });
 
@@ -274,6 +293,16 @@ export class CreateStudentComponent implements OnInit {
       }
     });
   }
+    async validateEducationType(student: any) {
+    this.selectedEducationType = this.educationTypes?.find(function (educationTypeData) {
+      debugger;
+      if (educationTypeData.masterId == student.educationTypeId) {
+        debugger;
+        educationTypeData.name = educationTypeData.name;
+        return educationTypeData;
+      }
+    });
+  }
 
   async validateHistory(): Promise<any> {
     let student: any;
@@ -324,6 +353,9 @@ export class CreateStudentComponent implements OnInit {
         this.religions = this.masterData?.religionsList || [];
         this.nationalities = this.masterData?.nationalityList || [];
         this.modeOfRelations = this.masterData?.modeRelationList || [];
+        this.educationTypes = this.masterData?.educationTypeList || [];
+
+
 
         if (this.action == 'edit' || this.action == 'view') {
           let student: any;
@@ -343,6 +375,14 @@ export class CreateStudentComponent implements OnInit {
           this.parentEmail = student.parentEmail;
           this.parentMobileNumber = student.parentMobileNumber;
           this.parentName = student.parentName;
+          this.pincode = student.pincode;
+          this.emergencyNumber = student.emergencyNumber;
+          this.parentAadhar = student.parentAadhar;
+          this.referalEmployeeId = student.referalEmployeeId;
+
+          this.previewUrl = student.studentProfileImage ? 'data:image/jpeg;base64,' + student.studentProfileImage : null;
+          this.parentPreviewUrl = student.parentProfileImage ? 'data:image/jpeg;base64,' + student.parentProfileImage : null;
+          this.studentCertificateUrl = student.studentTcImage ? 'data:image/jpeg;base64,' + student.studentTcImage : null;
 
 
           this.validateAcademic(student);
@@ -358,6 +398,7 @@ export class CreateStudentComponent implements OnInit {
           this.validateRequiresTransport(student);
           this.validateRequiresUniform(student);
           this.validateModeofRelation(student);
+          this.validateEducationType(student);
           debugger;
           this.getSectionDataedit(student.classId, student);
 
@@ -399,7 +440,11 @@ export class CreateStudentComponent implements OnInit {
     });
   }
 
-
+  async onEducationType(event: any) {
+    if (event.value != null) {
+      event.value.educationTypeLabel = event.value.name;
+    }
+  }
   async onSection(event: any) {
     if (event.value != null) {
       event.value.sectionLabel = event.value.sectionName;
@@ -472,19 +517,22 @@ export class CreateStudentComponent implements OnInit {
     student.genderId = student.genderId.masterId;
     student.sectionId = student.sectionId.id;
     student.modeOfRelation = student.modeOfRelation.masterId;
+    student.educationTypeId = student.educationTypeId.masterId;
 
-    // student.photoData = this.studentImageId;
-    // const reader = new FileReader();
-
-    // student.profileImage = this.selectedFile ? this.selectedFile.bytes() : null;
-
+    student.parentImageUploadId = this.parentImageId;
+    student.studentImageUploadId = this.studentImageId;
+    student.studentTcUploadId = this.studentTCImageId;
 
     this.createStudentApiService.save(student).subscribe({
       next: (response) => {
         this.studentForm.enable();
         this.showLoading = false;
         this.showToast('SUCCESS', 'Student created successfully!', 'New student has been created successfully');
-        this.studentForm.reset({ "parentName": "", "parentMobileNumber": "", "parentEmail": "", "dateOfBirth": "", "dateOfAdmission": "", "firstName": "", "lastName": "", "aadhaarCardNumber": "", "mobileNumber": "", "permanentAddress": "", "rollNumber": "", "admissionNumber": "" });
+        this.studentForm.reset({
+          "parentName": "", "parentMobileNumber": "", "parentEmail": "", "dateOfBirth": "", "dateOfAdmission": "", "firstName": "", "lastName": "", "aadhaarCardNumber": "",
+          "mobileNumber": "", "permanentAddress": "", "rollNumber": "", "admissionNumber": "",
+          "pincode": "", "emergencyNumber": "", "parentAadhar": ""
+        });
         this.sections = [];
         this.studentForm.get('sectionId')?.disable();
         this.selectedTransferStudents = { statusName: "active", statusValue: true };
@@ -492,6 +540,8 @@ export class CreateStudentComponent implements OnInit {
         this.selectedRequiresBooks = { statusName: "active", statusValue: true };
         this.selectedRequiresTransports = { statusName: "active", statusValue: true };
         this.selectedRequiresUniform = { statusName: "active", statusValue: true };
+        this.parentPreviewUrl = "";
+        this.studentCertificateUrl = "";
         this.previewUrl = "";
 
       },
@@ -526,6 +576,11 @@ export class CreateStudentComponent implements OnInit {
     student.genderId = student.genderId.masterId;
     student.sectionId = student.sectionId.id;
     student.modeOfRelation = student.modeOfRelation.masterId;
+    student.educationTypeId = student.educationTypeId.masterId;
+
+    student.parentImageUploadId = this.parentImageId==null? this.editStudent.parentImageUploadId : this.parentImageId;
+    student.studentImageUploadId = this.studentImageId==null? this.editStudent.studentImageUploadId : this.studentImageId;
+    student.studentTcUploadId = this.studentTCImageId==null? this.editStudent.studentTcUploadId : this.studentTCImageId;
 
     this.createStudentApiService.update(student).subscribe({
       next: (response) => {
@@ -674,7 +729,29 @@ export class CreateStudentComponent implements OnInit {
     ,
     religionId: {
       required: "Religion is required."
+    },
+    pincode: {
+      required: "Pin Code is required.",
+      minlength: "Pin Code must be at least 6 characters.",
+      maxlength: "Pin Code should not be greater than 6 characters."
+    },
+    educationTypeId: {
+      required: "Education Type is required."
+    },
+    // referalEmployeeId: {
+    //   required: "Referal Employee is required."
+    // },
+    emergencyNumber: {
+      required: "Emergency Contact Number is required.",
+      minlength: "Emergency Contact Number must be at least 10 characters.",
+      maxlength: "Emergency Contact Number should not be greater than 10 characters."
+    },
+    parentAadhar: {
+      required: "Parent Aadhaar Card Number is required.",
+      minlength: "Parent Aadhaar Card Number must be at least 12 characters.",
+      maxlength: "Parent Aadhaar Card Number should not be greater than 12 characters."
     }
+
   }
 
   // Preview selected file
@@ -685,14 +762,71 @@ export class CreateStudentComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.previewUrl = reader.result as string;
+        this.onUpload();
       };
       reader.readAsDataURL(this.selectedFile);
     }
   }
+  // Preview selected file
+  onFileSelectedParent(event: any): void {
+    this.selectedFileParent = event.target.files[0];
+
+    if (this.selectedFileParent) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.parentPreviewUrl = reader.result as string;
+        this.onUploadParent();
+      };
+      reader.readAsDataURL(this.selectedFileParent);
+    }
+  }
+  // Preview selected file
+  onFileSelectedStudentCertificate(event: any): void {
+    this.selectedFileStudentCertificate = event.target.files[0];
+
+    if (this.selectedFileStudentCertificate) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.studentCertificateUrl = reader.result as string;
+        this.onUploadStudentCertificate();
+      };
+      reader.readAsDataURL(this.selectedFileStudentCertificate);
+    }
+  }
   // Remove photo
   removePhoto(): void {
-    this.previewUrl = null;
-    this.selectedFile = null;
+    this.createStudentApiService.delete(this.studentImageId).subscribe({
+      next: (res) => {
+        this.message = 'Photo removed successfully!';
+        this.previewUrl = null;
+        this.selectedFile = null;
+      },
+      error: (err) => this.message = 'Failed to remove photo: ' + err.message
+    });
+  }
+  // Remove Parent photo
+  removeParentPhoto(): void {
+    this.createStudentApiService.delete(this.parentImageId).subscribe({
+      next: (res) => {
+        this.message = 'Photo removed successfully!';
+        this.parentPreviewUrl = null;
+        this.selectedFile = null;
+      },
+      error: (err) => this.message = 'Failed to remove photo: ' + err.message
+    });
+
+  }
+  // Remove Student TC photo
+  removeStudentCertificate(): void {
+    this.createStudentApiService.delete(this.studentTCImageId).subscribe({
+      next: (res) => {
+        this.message = 'Photo removed successfully!';
+        this.studentCertificateUrl = null;
+        this.selectedFile = null;
+      },
+      error: (err) => this.message = 'Failed to remove photo: ' + err.message
+    });
+
   }
 
 
@@ -701,6 +835,32 @@ export class CreateStudentComponent implements OnInit {
       this.createStudentApiService.uploadImage(this.selectedFile).subscribe({
         next: (res) => {
           this.studentImageId = res;
+          this.message = 'Upload successful!';
+        },
+        error: (err) => this.message = 'Upload failed: ' + err.message
+      });
+    } else {
+      this.message = 'Please select a file first!';
+    }
+  }
+  onUploadParent(): void {
+    if (this.selectedFileParent) {
+      this.createStudentApiService.uploadImage(this.selectedFileParent).subscribe({
+        next: (res) => {
+          this.parentImageId = res;
+          this.message = 'Upload successful!';
+        },
+        error: (err) => this.message = 'Upload failed: ' + err.message
+      });
+    } else {
+      this.message = 'Please select a file first!';
+    }
+  }
+  onUploadStudentCertificate(): void {
+    if (this.selectedFileStudentCertificate) {
+      this.createStudentApiService.uploadImage(this.selectedFileStudentCertificate).subscribe({
+        next: (res) => {
+          this.studentTCImageId = res;
           this.message = 'Upload successful!';
         },
         error: (err) => this.message = 'Upload failed: ' + err.message

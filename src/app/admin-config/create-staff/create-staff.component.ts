@@ -14,6 +14,9 @@ import { ActivatedRoute } from '@angular/router'
 import { Calendar, CalendarModule } from 'primeng/calendar';
 import { CreateStaffApiService } from './create-staff-api.service';
 import { firstValueFrom } from 'rxjs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
+
 @Component({
   selector: 'app-create-staff',
   standalone: true,
@@ -28,6 +31,32 @@ export class CreateStaffComponent implements OnInit {
   message: string = '';
   previewUrl: any;
   staffImageId: any;
+  SafeResourceUrl = null;
+  profileImageUploadId: any;
+  resumeUploadId: any;
+  idProofImageUploadId: any;
+  experienceImageUploadId: any;
+
+  selectedFileTC: File | null = null;
+  previewUrlTC: any;
+  staffImageIdTC: any;
+  fileNameTC: any;
+  isImageTC: boolean = false;
+  fileTypeTC: any;
+
+  selectedFileResume: File | null = null;
+  previewUrlResume: any;
+  staffImageIdResume: any;
+  fileNameResume: any;
+  isImageResume: boolean = false;
+  fileTypeResume: any;
+
+  selectedFileIdProof: File | null = null;
+  previewUrlIdProof: any;
+  staffImageIdIdProof: any;
+  fileNameIdProof: any;
+  isImageIdProof: boolean = false;
+  fileTypeIdProof: any;
 
 
 
@@ -125,7 +154,8 @@ export class CreateStaffComponent implements OnInit {
 
   constructor(private createStaffApiService: CreateStaffApiService,
     private _location: Location,
-    private messageService: MessageService, private route: ActivatedRoute) {
+    private messageService: MessageService, private route: ActivatedRoute,
+    private sanitizer: DomSanitizer) {
   }
 
   async ngOnInit() {
@@ -154,32 +184,25 @@ export class CreateStaffComponent implements OnInit {
     }
   }
   onGender(event: any) {
-    let genderId = event.value.id;
-    this.selectedGender = this.genders.find((gender: any) => gender.masterId === genderId);
+    this.selectedGender = event?.value;
   }
   onEmploymentType(event: any) {
-    let employmentTypeId = event.value.id;
-    this.selectedEmployeType = this.employeType.find((emp: any) => emp.masterId === employmentTypeId);
+    this.selectedEmployeType = event?.value;
   }
   onRelation(event: any) {
-    let relationId = event.value.id;
-    this.selectedRelation = this.relations.find((rel: any) => rel.masterId === relationId);
+    this.selectedRelation = event?.value;
   }
   onDepartment(event: any) {
-    let departmentId = event.value.id;
-    this.selectedDepartment = this.masterData?.departmentList.find((dept: any) => dept.masterId === departmentId);
+    this.selectedDepartment = event?.value;
   }
   onNativeLanguage(event: any) {
-    let languageId = event.value.id;
-    this.selectedNativeLanguage = this.nativeLanguages.find((lang: any) => lang.masterId === languageId);
+    this.selectedNativeLanguage = event?.value;
   }
   onReligion(event: any) {
-    let religionId = event.value.id;
-    this.selectedReligion = this.religions.find((rel: any) => rel.masterId === religionId);
+    this.selectedReligion = event?.value;
   }
   onDesignation(event: any) {
-    let designationId = event.value.id;
-    this.selectedDesignation = this.designations.find((desig: any) => desig.id === designationId);
+    this.selectedDesignation = event?.value;
     // if (selectedDesignation?.isTeaching) {
     //   this.employeType = this.masterData?.employmentTypesList.filter((emp: any) => emp.isTeaching == true);
     // } else {
@@ -187,12 +210,10 @@ export class CreateStaffComponent implements OnInit {
     // }
   }
   onMaritalStatus(event: any) {
-    let maritalStatusId = event.value.id;
-    this.selectedMaritalStatus = this.maritalStatus.find((marital: any) => marital.masterId === maritalStatusId);
+    this.selectedMaritalStatus = event?.value;
   }
   onStaffStatus(event: any) {
-    let staffStatusId = event.value.statusId;
-    this.selectedStatus = this.status.find((status: any) => status.statusId === staffStatusId);
+    this.selectedStatus = event?.value;
   }
 
   onSubmit() {
@@ -200,21 +221,21 @@ export class CreateStaffComponent implements OnInit {
     this.showLoading = true;
     let staff: any = this.staffForm.value;
 
-    staff.staffStatus = staff.staffStatus.statusName == "active" ? "Active" : "In-Active";
+    staff.staffStatus = staff.staffStatus.statusName == "active" ? "1" : "0";
+    debugger;
+    staff.department = staff.department.masterId;
+    staff.designation = staff.designation.id;
+    staff.emergencyContactRelation = staff.emergencyContactRelation.masterId;
+    staff.employmentType = staff.employmentType.masterId;
+    staff.gender = staff.gender.masterId;
+    staff.maritalStatus = staff.maritalStatus.masterId;
+    staff.nativeLanguage = staff.nativeLanguage.masterId;
+    staff.religion = staff.religion.masterId;
 
-    staff.department = staff.department.name;
-    staff.designation = staff.designation.designationName;
-    staff.emergencyContactRelation = staff.emergencyContactRelation.name;
-    staff.employmentType = staff.employmentType.name;
-    staff.gender = staff.gender.name;
-    staff.maritalStatus = staff.maritalStatus.name;
-    staff.nativeLanguage = staff.nativeLanguage.name;
-    staff.religion = staff.religion.name;
-
-    // staff.photoData = this.staffImageId;
-    // const reader = new FileReader();
-
-    // student.profileImage = this.selectedFile ? this.selectedFile.bytes() : null;
+    staff.profileImageUploadId = this.staffImageId;
+    staff.resumeUploadId = this.staffImageIdResume;
+    staff.idProofImageUploadId = this.staffImageIdIdProof;
+    staff.experienceImageUploadId = this.staffImageIdTC;
 
 
     this.createStaffApiService.save(staff).subscribe({
@@ -232,6 +253,11 @@ export class CreateStaffComponent implements OnInit {
         this.staffForm.get('designation')?.disable();
 
         this.previewUrl = "";
+        this.previewUrlIdProof = "";
+        this.previewUrlResume = "";
+        this.previewUrlTC = "";
+
+
 
       },
       error: (err: HttpErrorResponse) => {
@@ -249,18 +275,21 @@ export class CreateStaffComponent implements OnInit {
     this.showLoading = true;
     let staff: any = this.staffForm.value;
     staff.id = this.editStaff.id;
+    staff.staffStatus = staff.staffStatus?.statusValue === true ? 1 : 0;
 
-    staff.staffStatus = staff.staffStatus?.statusName ? staff.staffStatus?.statusName : staff.staffStatus == "active" ? "Active" : "In-Active";
+    staff.department = staff.department.masterId;
+    staff.designation = staff.designation.id;
+    staff.emergencyContactRelation = staff.emergencyContactRelation.masterId;
+    staff.employmentType = staff.employmentType.masterId;
+    staff.gender = staff.gender.masterId;
+    staff.maritalStatus = staff.maritalStatus.masterId;
+    staff.nativeLanguage = staff.nativeLanguage.masterId;
+    staff.religion = staff.religion.masterId;
 
-    staff.department = staff.department.name;
-    staff.designation = staff.designation.designationName;
-    staff.emergencyContactRelation = staff.emergencyContactRelation.name;
-    staff.employmentType = staff.employmentType.name;
-    staff.gender = staff.gender.name;
-    staff.maritalStatus = staff.maritalStatus.name;
-    staff.nativeLanguage = staff.nativeLanguage.name;
-    staff.religion = staff.religion.name;
-
+    staff.profileImageUploadId = this.profileImageUploadId == null ? this.editStaff.profileImageUploadId : this.profileImageUploadId;
+    staff.resumeUploadId = this.resumeUploadId == null ? this.editStaff.resumeUploadId : this.resumeUploadId;
+    staff.idProofImageUploadId = this.idProofImageUploadId == null ? this.editStaff.idProofImageUploadId : this.idProofImageUploadId;
+    staff.experienceImageUploadId = this.experienceImageUploadId == null ? this.editStaff.experienceImageUploadId : this.experienceImageUploadId;
 
     this.createStaffApiService.update(staff).subscribe({
       next: (response) => {
@@ -291,40 +320,13 @@ export class CreateStaffComponent implements OnInit {
         this.maritalStatus = this.masterData?.maritalStatusList;
         this.nativeLanguages = this.masterData?.languagesList;
 
+
+
         if (this.action == 'edit' || this.action == 'view') {
           let staff: any;
           staff = history.state.staff;
 
           this.editStaff = staff;
-
-          // this.firstName = staff.firstName;
-          // this.lastName = staff.lastName;
-          // this.middleName = staff.middleName;
-          // this.pan = staff.pan;
-          // this.dob = staff.dob ? new Date(staff.dob) : null;
-          // this.joiningDate = staff.joiningDate ? new Date(staff.joiningDate) : null;
-          // this.aadhar = staff.aadhar;
-          // this.address = staff.address;
-          // this.bankAccountNumber = staff.bankAccountNumber;
-          // this.bankIFSC = staff.bankIFSC;
-          // this.email = staff.email;
-          // this.emergencyContactName = staff.emergencyContactName;
-          // this.emergencyContactPhone = staff.emergencyContactPhone;
-          // this.qualification = staff.qualification;
-          // this.phone = staff.phone;
-          // this.upiId = staff.upiId;
-          // this.staffId = staff.staffId;
-
-          // this.selectedDepartment = this.departments.find((dept: any) => dept.name === staff.department);
-          // this.selectedDesignation = this.designations.find((desig: any) => desig.designationName === staff.designation);
-          // this.selectedRelation = this.relations.find((rel: any) => rel.name === staff.emergencyContactRelation);
-          // this.selectedEmployeType = this.employeType.find((emp: any) => emp.name === staff.employmentType);
-          // this.selectedMaritalStatus = this.maritalStatus.find((marital: any) => marital.name === staff.maritalStatus);
-          // this.selectedNativeLanguage = this.nativeLanguages.find((lang: any) => lang.name === staff.nativeLanguage);
-          // this.selectedReligion = this.religions.find((rel: any) => rel.name === staff.religion);
-          // this.selectedGender = this.genders.find((gender: any) => gender.name === staff.gender);
-          // this.selectedStatus = this.status.find((status: any) => status.statusName.toLowerCase() === staff.staffStatus.toLowerCase());
-
           this.staffForm.patchValue({
             firstName: staff.firstName,
             lastName: staff.lastName,
@@ -344,19 +346,28 @@ export class CreateStaffComponent implements OnInit {
             upiId: staff.upiId,
             staffId: staff.staffId
           });
+          this.previewUrl = staff.staffProfileImage ? 'data:image/jpeg;base64,' + staff.staffProfileImage : null;
+          this.previewUrlIdProof = staff.idProofImage
+            ? 'data:application/pdf;base64,' + staff.idProofImage
+            : null;
 
-          this.staffForm.patchValue({
-            department: this.departments.find(d => d.name === staff.department),
-            designation: this.designations.find(d => d.designationName === staff.designation),
-            emergencyContactRelation: this.relations.find(r => r.name === staff.emergencyContactRelation),
-            employmentType: this.employeType.find(e => e.name === staff.employmentType),
-            maritalStatus: this.maritalStatus.find(m => m.name === staff.maritalStatus),
-            nativeLanguage: this.nativeLanguages.find(l => l.name === staff.nativeLanguage),
-            religion: this.religions.find(r => r.name === staff.religion),
-            gender: this.genders.find(g => g.name === staff.gender),
-            staffStatus: this.status.find(s =>
-              s.statusName?.toLowerCase() === staff.staffStatus?.toLowerCase())
-          });
+          this.previewUrlTC = staff.experienceImage
+            ? 'data:application/pdf;base64,' + staff.experienceImage
+            : null;
+
+          this.previewUrlResume = staff.resumeImage
+            ? 'data:application/pdf;base64,' + staff.resumeImage
+            : null;
+          this.validateStaffStatus(staff);
+          this.validateGender(staff);
+          this.validateReligion(staff);
+          this.validateNativeLanguage(staff);
+          this.validateMaritalStatus(staff);
+          this.validateEmployee(staff);
+          this.validateRelation(staff);
+          this.validateDepartment(staff);
+          this.validateDesignation(staff);
+
           this.showUpdateButton = true;
           this.validateAction();
         }
@@ -366,6 +377,88 @@ export class CreateStaffComponent implements OnInit {
         this.segregateErrors(err);
       },
       complete: () => { }
+    });
+  }
+  async validateStaffStatus(student: any) {
+    debugger;
+    this.selectedStatus = this.status?.find(function (statusData) {
+      if (statusData.id == student.staffStatusId) {
+        statusData.statusName = statusData.statusName.toLowerCase() == "active" ? "Active" : "In-Active";
+        return statusData;
+      }
+    });
+  }
+  async validateGender(student: any) {
+    debugger;
+    this.selectedGender = this.genders?.find(function (genderData) {
+      if (genderData.id == student.genderId) {
+        genderData.genderName = genderData.name;
+        return genderData;
+      }
+    });
+  }
+  async validateReligion(student: any) {
+    debugger;
+    this.selectedReligion = this.religions?.find(function (religionData) {
+      if (religionData.id == student.religionId) {
+        religionData.religionName = religionData.name;
+        return religionData;
+      }
+    });
+  }
+  async validateNativeLanguage(student: any) {
+    debugger;
+    this.selectedNativeLanguage = this.nativeLanguages?.find(function (nativeLanguageData) {
+      if (nativeLanguageData.id == student.nativeLanguageId) {
+        nativeLanguageData.nativeLanguageName = nativeLanguageData.name;
+        return nativeLanguageData;
+      }
+    });
+  }
+
+  async validateMaritalStatus(student: any) {
+    debugger;
+    this.selectedMaritalStatus = this.maritalStatus?.find(function (maritalStatusData) {
+      if (maritalStatusData.id == student.maritalStatusId) {
+        maritalStatusData.maritalStatusName = maritalStatusData.name;
+        return maritalStatusData;
+      }
+    });
+  }
+  async validateEmployee(student: any) {
+    debugger;
+    this.selectedEmployeType = this.employeType?.find(function (employeTypeData) {
+      if (employeTypeData.id == student.employmentTypeId) {
+        employeTypeData.employmentTypeName = employeTypeData.name;
+        return employeTypeData;
+      }
+    });
+  }
+  async validateRelation(student: any) {
+    debugger;
+    this.selectedRelation = this.relations?.find(function (relationData) {
+      if (relationData.id == student.emergencyContactRelationId) {
+        relationData.relationName = relationData.name;
+        return relationData;
+      }
+    });
+  }
+  async validateDepartment(student: any) {
+    debugger;
+    this.selectedDepartment = this.departments?.find(function (departmentData) {
+      if (departmentData.id == student.departmentId) {
+        departmentData.departmentName = departmentData.name;
+        return departmentData;
+      }
+    });
+  }
+  async validateDesignation(student: any) {
+    debugger;
+    this.selectedDesignation = this.designations?.find(function (designationData) {
+      if (designationData.id == student.designation) {
+        designationData.designationName = designationData.designationName;
+        return designationData;
+      }
     });
   }
   getErrorMessage(fieldName: any, staffFormErrors: any) {
@@ -490,17 +583,177 @@ export class CreateStaffComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.previewUrl = reader.result as string;
+        this.onUpload();
       };
       reader.readAsDataURL(this.selectedFile);
     }
   }
+  onFileSelectedTC(event: any): void {
+    this.selectedFileTC = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+
+    debugger;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.fileNameTC = file.name;
+      this.fileTypeTC = file.type;
+
+      if (file.type.startsWith('image/')) {
+        // Show image preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.previewUrlTC = reader.result as string;
+          this.isImageTC = true;
+          this.onUploadTC();
+        };
+        reader.readAsDataURL(file);
+      } else if (file.type === 'application/pdf') {
+        // Show PDF preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          // sanitize for iframe
+          // this.previewUrlTC = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   reader.result as string
+          // );
+
+          const url = URL.createObjectURL(file);
+          this.previewUrlTC = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          this.isImageTC = false;
+          debugger;
+          this.onUploadTC();
+        };
+
+        reader.readAsDataURL(file);
+
+
+      } else {
+        // For Word/Excel, just show file name
+        this.previewUrlTC = null;
+      }
+    }
+  }
+  onFileSelectedIdProof(event: any) {
+    this.selectedFileIdProof = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.fileNameIdProof = file.name;
+      this.fileTypeIdProof = file.type;
+
+      if (file.type.startsWith('image/')) {
+        // Show image preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.previewUrlIdProof = reader.result as string;
+          this.isImageIdProof = true;
+          this.onUploadIdProof();
+        };
+        reader.readAsDataURL(file);
+      } else if (file.type === 'application/pdf') {
+        // Show PDF preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          // sanitize for iframe
+          // this.previewUrlIdProof = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   reader.result as string
+          // );
+          const url = URL.createObjectURL(file);
+          this.previewUrlIdProof = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          this.isImageIdProof = false;
+          this.onUploadIdProof();
+        };
+
+        reader.readAsDataURL(file);
+
+
+      } else {
+        // For Word/Excel, just show file name
+        this.previewUrlIdProof = null;
+      }
+    }
+  }
+  onFileSelectedResume(event: any): void {
+    this.selectedFileResume = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.fileNameResume = file.name;
+      this.fileTypeResume = file.type;
+
+      if (file.type.startsWith('image/')) {
+        // Show image preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.previewUrlResume = reader.result as string;
+          this.isImageResume = true;
+          this.onUploadResume();
+        };
+        reader.readAsDataURL(file);
+      } else if (file.type === 'application/pdf') {
+        // Show PDF preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          // sanitize for iframe
+          // this.previewUrlResume = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   reader.result as string
+          // );
+          const url = URL.createObjectURL(file);
+          this.previewUrlResume = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          this.isImageResume = false;
+          this.onUploadResume();
+        };
+
+        reader.readAsDataURL(file);
+
+
+      } else {
+        // For Word/Excel, just show file name
+        this.previewUrlResume = null;
+      }
+    }
+  }
   // Remove photo
   removePhoto(): void {
-    this.previewUrl = null;
-    this.selectedFile = null;
+    this.createStaffApiService.delete(this.staffImageId).subscribe({
+      next: (res) => {
+        this.message = 'Photo removed successfully!';
+        this.previewUrl = null;
+        this.selectedFile = null;
+      },
+      error: (err) => this.message = 'Failed to remove photo: ' + err.message
+    });
   }
 
-
+  removePhotoTC(): void {
+    this.createStaffApiService.delete(this.staffImageIdTC).subscribe({
+      next: (res) => {
+        this.message = 'Photo removed successfully!';
+        this.previewUrlTC = null;
+        this.selectedFileTC = null;
+      },
+      error: (err) => this.message = 'Failed to remove photo: ' + err.message
+    });
+  }
+  removePhotoResume(): void {
+    this.createStaffApiService.delete(this.staffImageIdResume).subscribe({
+      next: (res) => {
+        this.message = 'Photo removed successfully!';
+        this.previewUrlResume = null;
+        this.selectedFileResume = null;
+      },
+      error: (err) => this.message = 'Failed to remove photo: ' + err.message
+    });
+  }
+  removePhotoIdProof(): void {
+    this.createStaffApiService.delete(this.staffImageIdIdProof).subscribe({
+      next: (res) => {
+        this.message = 'Photo removed successfully!';
+        this.previewUrlIdProof = null;
+        this.selectedFileIdProof = null;
+      },
+      error: (err) => this.message = 'Failed to remove photo: ' + err.message
+    });
+  }
   onUpload(): void {
     if (this.selectedFile) {
       this.createStaffApiService.uploadImage(this.selectedFile).subscribe({
@@ -514,5 +767,43 @@ export class CreateStaffComponent implements OnInit {
       this.message = 'Please select a file first!';
     }
   }
-
+  onUploadTC(): void {
+    if (this.selectedFileTC) {
+      this.createStaffApiService.uploadImage(this.selectedFileTC).subscribe({
+        next: (res) => {
+          this.staffImageIdTC = res;
+          this.message = 'Upload successful!';
+        },
+        error: (err) => this.message = 'Upload failed: ' + err.message
+      });
+    } else {
+      this.message = 'Please select a file first!';
+    }
+  }
+  onUploadIdProof(): void {
+    if (this.selectedFileIdProof) {
+      this.createStaffApiService.uploadImage(this.selectedFileIdProof).subscribe({
+        next: (res) => {
+          this.staffImageIdIdProof = res;
+          this.message = 'Upload successful!';
+        },
+        error: (err) => this.message = 'Upload failed: ' + err.message
+      });
+    } else {
+      this.message = 'Please select a file first!';
+    }
+  }
+  onUploadResume(): void {
+    if (this.selectedFileResume) {
+      this.createStaffApiService.uploadImage(this.selectedFileResume).subscribe({
+        next: (res) => {
+          this.staffImageIdResume = res;
+          this.message = 'Upload successful!';
+        },
+        error: (err) => this.message = 'Upload failed: ' + err.message
+      });
+    } else {
+      this.message = 'Please select a file first!';
+    }
+  }
 }

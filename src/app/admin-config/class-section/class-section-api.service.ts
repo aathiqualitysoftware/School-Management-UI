@@ -18,6 +18,6 @@ export class ClassSectionApiService {
   }
 
   deletesectionById(id: any): Observable<any> {
-    return this.http.delete('http://localhost:8082/lrs/api/sections/' + id);
+    return this.http.delete('http://localhost:8083/lrs/api/sections/' + id);
   }
 }

@@ -34,5 +34,7 @@ export class CreateStaffApiService {
 
     return this.http.post('http://localhost:8082/lrs/api/images/upload?createdBy=system', formData, { responseType: 'text' });
   }
-
+ delete(id: any): Observable<any> {
+      return this.http.delete('http://localhost:8082/lrs/api/images/' + id);
+    }
 }

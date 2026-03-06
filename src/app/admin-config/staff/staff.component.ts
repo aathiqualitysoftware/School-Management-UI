@@ -131,7 +131,7 @@ export class StaffComponent implements OnInit {
         this.tableMultiSortingMetaData = [{ field: 'createdDateTime', order: -1 }];
         this.dt1!._rows = 8;
         this.deleteLoading = false;
-        this.staffApiService.getStaffData(this.selectedDepartment.name).subscribe({
+        this.staffApiService.getStaffData(this.selectedDepartment.masterId).subscribe({
             next: (response) => {
                 this.staffs = response;
                 this.enableSearchLoading = false;

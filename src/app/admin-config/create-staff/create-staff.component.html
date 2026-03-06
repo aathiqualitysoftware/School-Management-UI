@@ -22,10 +22,9 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Department</div>
 
-                <p-dropdown [options]="departments" [(ngModel)]="selectedDepartment" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true"
-                    placeholder="Select Department" class="pDropdown pDropdown300px" formControlName="department"
-                    (onChange)="onDepartment($event)">
+                <p-dropdown [options]="departments" [(ngModel)]="selectedDepartment" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Department"
+                    class="pDropdown pDropdown300px" formControlName="department" (onChange)="onDepartment($event)">
                     <ng-template let-department pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
                             <div>{{ department.name }} </div>
@@ -163,7 +162,7 @@
                     </div>
                 </div>
             </div>
-             <!-- bankAccountNumber -->
+            <!-- bankAccountNumber -->
             <div class="textboxComponent mt5 mr18 mh70">
                 <div class="textboxName">Bank Account Number</div>
                 <input type="text" pInputText [(ngModel)]="bankAccountNumber" class="pinputText pinputText300px"
@@ -283,9 +282,10 @@
             <!-- emergencyContactRelation -->
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Emergency Contact Relation</div>
-                <p-dropdown [options]="relations" [(ngModel)]="selectedRelation" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Relation"
-                    class="pDropdown pDropdown300px" formControlName="emergencyContactRelation" (onChange)="onRelation($event)">
+                <p-dropdown [options]="relations" [(ngModel)]="selectedRelation" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Relation"
+                    class="pDropdown pDropdown300px" formControlName="emergencyContactRelation"
+                    (onChange)="onRelation($event)">
                     <ng-template let-relation pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
                             <div>{{ relation.name }} </div>
@@ -302,10 +302,10 @@
             <!-- employmentType -->
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Employment Type</div>
-                <p-dropdown [options]="employeType" [(ngModel)]="selectedEmployeType" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true"
-                    placeholder="Select Employment Type" class="pDropdown pDropdown300px"
-                    formControlName="employmentType" (onChange)="onEmploymentType($event)">
+                <p-dropdown [options]="employeType" [(ngModel)]="selectedEmployeType" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Employment Type"
+                    class="pDropdown pDropdown300px" formControlName="employmentType"
+                    (onChange)="onEmploymentType($event)">
                     <ng-template let-employmentType pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
                             <div>{{ employmentType.name }} </div>
@@ -345,9 +345,9 @@
                 <div class="dropdownName">Native Language</div>
 
                 <p-dropdown [options]="nativeLanguages" [(ngModel)]="selectedNativeLanguage" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true"
-                    placeholder="Select Native Language" class="pDropdown pDropdown300px"
-                    formControlName="nativeLanguage" (onChange)="onNativeLanguage($event)">
+                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Native Language"
+                    class="pDropdown pDropdown300px" formControlName="nativeLanguage"
+                    (onChange)="onNativeLanguage($event)">
                     <ng-template let-language pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
                             <div>{{ language.name }} </div>
@@ -365,8 +365,8 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Religion</div>
 
-                <p-dropdown [options]="religions" [(ngModel)]="selectedReligion" optionLabel="name"
-                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Religion"
+                <p-dropdown [options]="religions" [(ngModel)]="selectedReligion" optionLabel="name" [filter]="true"
+                    [filterFields]="['name']" [showClear]="true" placeholder="Select Religion"
                     class="pDropdown pDropdown300px" formControlName="religion" (onChange)="onReligion($event)">
                     <ng-template let-religion pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
@@ -386,10 +386,10 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Marital Status</div>
 
-                <p-dropdown [options]="maritalStatus" [(ngModel)]="selectedMaritalStatus"
-                    optionLabel="name" [filter]="true" [filterFields]="['name']"
-                    [showClear]="true" placeholder="Select Marital Status" class="pDropdown pDropdown300px"
-                    formControlName="maritalStatus" (onChange)="onMaritalStatus($event)">
+                <p-dropdown [options]="maritalStatus" [(ngModel)]="selectedMaritalStatus" optionLabel="name"
+                    [filter]="true" [filterFields]="['name']" [showClear]="true" placeholder="Select Marital Status"
+                    class="pDropdown pDropdown300px" formControlName="maritalStatus"
+                    (onChange)="onMaritalStatus($event)">
                     <ng-template let-maritalStatus pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
                             <div>{{ maritalStatus.name }} </div>
@@ -424,32 +424,112 @@
                     </div>
                 </div>
             </div>
-
-             <div>
-                <h3>Profile Photo</h3>
-
-                <!-- Upload box -->
-                <div class="upload-box" (click)="fileInput.click()">
-                    <ng-container *ngIf="!previewUrl">
-                        <i class="fa fa-camera"></i>
-                        <p>Upload Photo</p>
-                    </ng-container>
-                    <img *ngIf="previewUrl" [src]="previewUrl" alt="Profile Photo" />
+            <div class="upload-section">
+                <!-- Profile Photo -->
+                <div class="upload-card">
+                    <h3>Profile Photo</h3>
+                    <div class="upload-box" (click)="fileInput.click()">
+                        <ng-container *ngIf="!previewUrl">
+                            <i class="fa fa-camera"></i>
+                            <p>Upload Photo</p>
+                        </ng-container>
+                        <img *ngIf="previewUrl" [src]="previewUrl" alt="Profile Photo" />
+                    </div>
+                    <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden />
+                    <button class="remove-btn" *ngIf="previewUrl" (click)="removePhoto()">Remove Photo</button>
                 </div>
 
-                <!-- Hidden file input -->
-                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden />
+                <!-- Experience Certificate -->
+                <div class="upload-card">
+                    <h3>Experience Certificate</h3>
+                    <div class="upload-box" (click)="fileInputTC.click()">
+                        <ng-container *ngIf="!previewUrlTC && !fileNameTC">
+                            <i class="fa fa-upload"></i>
+                            <p>Upload Experience Certificate (Image/PDF/Word/Excel)</p>
+                        </ng-container>
 
-                <!-- Remove button -->
-                <button class="remove-btn" *ngIf="previewUrl" (click)="removePhoto()">
-                    Remove Photo
-                </button>
+                        <!-- Image preview -->
+                        <img *ngIf="previewUrlTC && fileTypeTC?.startsWith('image/')" [src]="previewUrlTC"
+                            alt="Experience Certificate" />
+
+                        <!-- PDF preview -->
+                        <iframe *ngIf="previewUrlTC && fileTypeTC === 'application/pdf'" [src]="previewUrlTC"
+                            width="100%" height="200px"></iframe>
+
+                        <!-- Word/Excel file name -->
+                        <p *ngIf="!previewUrlTC && fileNameTC">File selected: {{ fileNameTC }}</p>
+                    </div>
+
+                    <input type="file" #fileInputTC (change)="onFileSelectedTC($event)"
+                        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" hidden />
+                    <button class="remove-btn" *ngIf="fileNameTC" (click)="removePhotoTC()">Remove File</button>
+
+                    <!-- Download link for PDF -->
+                    <a *ngIf="previewUrlTC && fileTypeTC === 'application/pdf'" [href]="previewUrlTC"
+                        download="{{fileNameTC}}">
+                        Download PDF
+                    </a>
+                </div>
+                <!-- Resume -->
+                <div class="upload-card">
+                    <h3>Resume</h3>
+                    <div class="upload-box" (click)="fileInputResume.click()">
+                        <ng-container *ngIf="!previewUrlResume && !fileNameResume">
+                            <i class="fa fa-upload"></i>
+                            <p>Upload Resume (Image/PDF/Word/Excel)</p>
+                        </ng-container>
+
+                        <!-- Image preview -->
+                        <img *ngIf="previewUrlResume && fileTypeResume?.startsWith('image/')" [src]="previewUrlResume"
+                            alt="Resume" />
+                        <!-- PDF preview -->
+                        <iframe *ngIf="previewUrlResume && fileTypeResume === 'application/pdf'" [src]="previewUrlResume"
+                            width="100%" height="200px"></iframe>
+
+                        <!-- Word/Excel file name -->
+                        <p *ngIf="!previewUrlResume && fileNameResume">File selected: {{ fileNameResume }}</p>
+                    </div>
+
+                    <input type="file" #fileInputResume (change)="onFileSelectedResume($event)"
+                        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" hidden />
+                    <button class="remove-btn" *ngIf="fileNameResume" (click)="removePhotoResume()">Remove File</button>
+                    <!-- Download link for PDF -->
+                    <a *ngIf="previewUrlResume && fileTypeResume === 'application/pdf'" [href]="previewUrlResume"
+                        download="{{fileNameResume}}">
+                        Download PDF
+                    </a>
+                </div>
+                <!-- ID Proof -->
+                <div class="upload-card">
+                    <h3>ID Proof</h3>
+                    <div class="upload-box" (click)="fileInputIdProof.click()">
+                        <ng-container *ngIf="!previewUrlIdProof && !fileNameIdProof">
+                            <i class="fa fa-upload"></i>
+                            <p>Upload ID Proof (Image/PDF/Word/Excel)</p>
+                        </ng-container>
+
+                        <!-- Image preview -->
+                        <img *ngIf="previewUrlIdProof && fileTypeIdProof?.startsWith('image/')" [src]="previewUrlIdProof"
+                            alt="ID Proof" />
+                        <!-- PDF preview -->
+                        <iframe *ngIf="previewUrlIdProof && fileTypeIdProof === 'application/pdf'" [src]="previewUrlIdProof"
+                            width="100%" height="200px"></iframe>
+
+                        <!-- Word/Excel file name -->
+                        <p *ngIf="!previewUrlIdProof && fileNameIdProof">File selected: {{ fileNameIdProof }}</p>
+                    </div>
+
+                    <input type="file" #fileInputIdProof (change)="onFileSelectedIdProof($event)"
+                        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" hidden />
+                    <button class="remove-btn" *ngIf="fileNameIdProof" (click)="removePhotoIdProof()">Remove File</button>
+                    <!-- Download link for PDF -->
+                    <a *ngIf="previewUrlResume && fileTypeResume === 'application/pdf'" [href]="previewUrlResume"
+                        download="{{fileNameResume}}">
+                        Download PDF
+                    </a>
+                </div>
             </div>
-
             <!-- view only attributes start -->
-
-
-
             <div class="textboxComponent mt5 mr18 mh70" *ngIf="action=='view'">
                 <div class="textboxName">Created By</div>
                 <input type="text" pInputText class="pinputText pinputText300px" [value]="editStaff?.createdBy"
