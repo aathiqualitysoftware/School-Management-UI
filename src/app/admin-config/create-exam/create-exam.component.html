@@ -80,9 +80,10 @@
                 </div>
             </div>
             <div class="dropdownComponent mt5 mr18 mh70">
-                <div class="dropdownName">Start Date</div>
-                <p-calendar formControlName="startDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
-                    inputId="startDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                <div class="dropdownName">Start Time</div>
+                <p-calendar formControlName="startDate" [showTime]="true" hourFormat="24" [showIcon]="true"
+                    dateFormat="dd/mm/yy" class="dateInput" inputId="startDate" [style]="{'width':'300px'}"
+                    [iconDisplay]="'input'">
                 </p-calendar>
                 <div
                     *ngIf="examForm.controls.startDate.invalid && (examForm.controls.startDate.dirty || examForm.controls.startDate.touched)">
@@ -92,14 +93,15 @@
                 </div>
             </div>
             <div class="dropdownComponent mt5 mr18 mh70">
-                <div class="dropdownName">End Date</div>
-                <p-calendar formControlName="endDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
-                    inputId="endDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                <div class="dropdownName">End Time</div>
+                <p-calendar formControlName="endDate" [showTime]="true" hourFormat="24" [showIcon]="true"
+                    dateFormat="dd/mm/yy" class="dateInput" inputId="endDate" [style]="{'width':'300px'}"
+                    [iconDisplay]="'input'">
                 </p-calendar>
                 <div *ngIf="examForm.errors?.['dateInvalid'] && examForm.get('endDate')?.touched">
                     <div *ngIf="examForm.errors?.['dateInvalid'] && examForm.get('endDate')?.touched"
                         class="gilroyNormal fontRed s11 mt5">
-                        End date must be greater than Start date
+                        End Time must be greater than Start Time
                     </div>
                 </div>
                 <div

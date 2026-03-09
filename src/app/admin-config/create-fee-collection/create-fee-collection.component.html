@@ -1,0 +1,132 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/fees')">Fees</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Fee Collection</span>
+        <span *ngIf="action == 'edit'">Edit Fee Collection</span>
+        <span *ngIf="action == 'view'">View Fee Collection</span>
+    </div>
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Collect Student Fee</span>
+        <span *ngIf="action == 'edit'">Edit Fee Collection</span>
+        <span *ngIf="action == 'view'">View Fee Collection</span>
+    </div>
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">
+            Please fill below details to collect student fee
+        </div>
+        <form [formGroup]="feeCollectionForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Student</div>
+                <p-dropdown class="pDropdown pDropdown300px" (onChange)="OnStudent($event)" [options]="students"
+                    formControlName="student" optionLabel="firstName" placeholder="Select Student" [filter]="true"
+                    [showClear]="true">
+                    <ng-template let-stdnt pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{stdnt.firstName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="feeCollectionForm.controls.student.invalid && (feeCollectionForm.controls.student.dirty || feeCollectionForm.controls.student.touched)">
+                    <div *ngIf="feeCollectionForm.controls.student.errors != null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('student', feeCollectionForm.controls.student.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Class</div>
+                <p-dropdown class="pDropdown pDropdown300px" [disabled]="true" [options]="Classes"
+                    formControlName="class" optionLabel="name" placeholder="Class">
+                </p-dropdown>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Section</div>
+                <p-dropdown class="pDropdown pDropdown300px" [disabled]="true" [options]="sections"
+                    formControlName="section" optionLabel="sectionName" placeholder="Section">
+                </p-dropdown>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Payment Mode</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="paymentModes" formControlName="paymentMode"
+                    optionLabel="label" placeholder="Select Payment Mode">
+                    <ng-template let-pay pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{pay.label}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Payment Date</div>
+                <p-calendar formControlName="paymentDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="paymentDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+            </div>
+            <div formArrayName="feeDetails">
+                <table class="feeTable">
+                    <thead>
+                        <tr>
+                            <th class="gilroyNormal s13 fw600">Fee Head</th>
+                            <th class="gilroyNormal s13 fw600">Total Amount</th>
+                            <th class="gilroyNormal s13 fw600">Paid Amount</th>
+                            <th class="gilroyNormal s13 fw600">Balance Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let fee of feeDetails.controls; let i=index" [formGroupName]="i">
+                            <td>
+                                <p-dropdown class="pDropdown pDropdown300px" [options]="feeHeads"
+                                    formControlName="feeHead" optionLabel="name" placeholder="Select Fee Head"
+                                    [filter]="true">
+                                    <ng-template let-pay pTemplate="item">
+                                        <div class="align-items-center gap-0 dropdown-items">
+                                            <div>{{pay.name}}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </td>
+                            <td>
+                                <input type="number" pInputText formControlName="totalAmount" readonly>
+                            </td>
+                            <td>
+                                <input type="number" pInputText formControlName="paidAmount"
+                                    [max]="fee.get('totalAmount')?.value">
+                            </td>
+                            <td>
+                                <input type="number" pInputText formControlName="balanceAmount" readonly>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="textboxComponent mt20 mr18 mh70">
+                <div class="textboxName">Total Paid Amount</div>
+                <input type="number" class="pinputText pinputText300px" pInputText formControlName="totalPaid" readonly>
+            </div>
+            <div class="mt40" *ngIf="action != 'view'">
+                <button type="submit" *ngIf="action == 'save'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!feeCollectionForm.valid" [style.background-color]="showLoading ? '#860063' : ''"
+                    [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Save</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+                </button>
+
+                <button type="submit" *ngIf="action == 'edit'" class="success-btn fw600 addlPaddingNBorder"
+                    [disabled]="!feeCollectionForm.valid || !showUpdateButton"
+                    [style.background-color]="showLoading ? '#860063' : ''" [style.width]="showLoading ? '130px' : ''">
+                    <span *ngIf="!showLoading">Update</span>
+                    <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                            style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Updating...</span>
+                </button>
+
+                <button type="button" class="cancel-btn ml10 fw600"
+                    (click)="navigateMenu('home/portal-config')">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>

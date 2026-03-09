@@ -288,7 +288,7 @@ export class HomeComponent implements OnInit, AfterContentChecked {
       "roles": Constants.PORTAL_DESKTOP
     },
     {
-      "navName": "Fees",
+      "navName": "Fee Collection",
       "navIcon": "assets/images/portal-config-icon.svg",
       "navURL": "home/admin-config/fees",
       "roles": Constants.PORTAL_DESKTOP
@@ -297,6 +297,12 @@ export class HomeComponent implements OnInit, AfterContentChecked {
       "navName": "Attendance",
       "navIcon": "assets/images/portal-config-icon.svg",
       "navURL": "home/admin-config/attendance",
+      "roles": Constants.PORTAL_DESKTOP
+    },
+    {
+      "navName": "Student Fee Entry",
+      "navIcon": "assets/images/portal-config-icon.svg",
+      "navURL": "home/admin-config/studentfeeentry",
       "roles": Constants.PORTAL_DESKTOP
     },
     // {

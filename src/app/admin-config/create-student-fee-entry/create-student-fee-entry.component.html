@@ -1,0 +1,196 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="p15 pl25">
+    <!-- Breadcrumb -->
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">
+        <span class="breadCrumbsBack" (click)="navigateMenu('home/fees')">Fees</span>
+        <i class="pi pi-angle-left breadCrumbsArrow"></i>
+        <span *ngIf="action == 'save'">Create Student Fee</span>
+        <span *ngIf="action == 'edit'">Edit Student Fee</span>
+        <span *ngIf="action == 'view'">View Student Fee</span>
+    </div>
+
+    <!-- Title -->
+    <div class="gilroyNormal s13 fw600">
+        <span *ngIf="action == 'save'">Create Student Fee Entry</span>
+        <span *ngIf="action == 'edit'">Edit Student Fee Entry</span>
+        <span *ngIf="action == 'view'">View Student Fee Entry</span>
+    </div>
+
+    <div class="whiteDivision" style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">
+            Please fill below details to create Student Fee Entry
+        </div>
+
+        <form [formGroup]="studentFeeForm" (ngSubmit)="action=='edit' ? onEdit() : onSubmit()">
+
+            <!-- Student -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Student</div>
+                <p-dropdown class="pDropdown pDropdown300px" (onChange)="OnStudent($event)" [options]="students"
+                    formControlName="student" optionLabel="firstName" filterBy="firstName" placeholder="Select Student"
+                    [filter]="true" [showClear]="true">
+                    <ng-template let-stdnt pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{stdnt.firstName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentFeeForm.controls.student.invalid && (studentFeeForm.controls.student.dirty || studentFeeForm.controls.student.touched)">
+                    <div *ngIf="studentFeeForm.controls.student.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('student',studentFeeForm.controls.student.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Class</div>
+                <p-dropdown class="pDropdown pDropdown300px" [disabled]="true" [options]="Classes"
+                    formControlName="class" optionLabel="name" filterBy="name" placeholder="Select Class"
+                    [filter]="true" [showClear]="true">
+                    <ng-template let-cls pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{cls.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentFeeForm.controls.class.invalid && (studentFeeForm.controls.class.dirty || studentFeeForm.controls.class.touched)">
+                    <div *ngIf="studentFeeForm.controls.class.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('class',studentFeeForm.controls.class.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- Section -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Sections</div>
+                <p-dropdown [options]="sections" [disabled]="true" formControlName="section" optionLabel="sectionName"
+                    [filter]="true" filterBy="sectionName" [showClear]="true" placeholder="Select Section"
+                    class="pDropdown pDropdown300px">
+                    <ng-template let-section pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{section.sectionName}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentFeeForm.controls.section.invalid && (studentFeeForm.controls.section.dirty || studentFeeForm.controls.section.touched)">
+                    <div *ngIf="studentFeeForm.controls.section.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('section',studentFeeForm.controls.section.errors)}}
+                    </div>
+                </div>
+            </div>
+            <!-- Collection Type -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Collection Type</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="collectionTypes"
+                    formControlName="collectionType" optionLabel="label" placeholder="Select Collection Type"
+                    [showClear]="true">
+                </p-dropdown>
+            </div>
+
+            <!-- Due Date -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Due Date</div>
+                <p-calendar formControlName="dueDate" [showIcon]="true" dateFormat="dd/mm/yy" class="dateInput"
+                    inputId="dueDate" [style]="{'width':'300px'}" [iconDisplay]="'input'">
+                </p-calendar>
+                <div
+                    *ngIf="studentFeeForm.controls.dueDate.invalid && (studentFeeForm.controls.dueDate.dirty || studentFeeForm.controls.dueDate.touched)">
+                    <div *ngIf="studentFeeForm.controls.dueDate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('dueDate',studentFeeForm.controls.dueDate.errors)}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Academic Year</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="years" formControlName="year" optionLabel="name"
+                    filterBy="name" placeholder="Select Year" [filter]="true" [showClear]="true">
+                    <ng-template let-year pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{year.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <div
+                    *ngIf="studentFeeForm.controls.year.invalid && (studentFeeForm.controls.year.dirty || studentFeeForm.controls.year.touched)">
+                    <div *ngIf="studentFeeForm.controls.year.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('year',studentFeeForm.controls.year.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div formArrayName="feeDetails">
+                <table class="feeTable">
+                    <thead>
+                        <tr>
+                            <th class="gilroyNormal s13 fw600" style="width:20%">Fee Head</th>
+                            <th class="gilroyNormal s13 fw600" style="width:20%">Amount</th>
+                            <th class="gilroyNormal s13 fw600" style="width:10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let fee of feeDetails.controls; let i = index" [formGroupName]="i">
+                            <!-- Fee Head -->
+                            <td>
+                                <p-dropdown class="pDropdown pDropdown300px" [options]="feeHeads"
+                                    formControlName="feeHead" optionLabel="fee_head_name" placeholder="Select Fee Head"
+                                    [filter]="true">
+                                </p-dropdown>
+                            </td>
+                            <!-- Amount -->
+                            <td>
+                                <input type="number" class="pinputText pinputText300px" pInputText
+                                    formControlName="amount">
+                            </td>
+                            <!-- Remove Button -->
+                            <td>
+                                <button type="button" class="removeBtn" (click)="removeFeeRow(i)">
+                                    Remove
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <div>
+                <button type="button" class="addBtn" (click)="addFeeRow()">Add Fee Head</button>
+            </div>
+            <br>
+            <!-- Discount Type -->
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">Discount Type</div>
+                <p-dropdown class="pDropdown pDropdown300px" [options]="discountTypes" formControlName="discountType"
+                    optionLabel="label" placeholder="Select Discount Type" [showClear]="true">
+                </p-dropdown>
+            </div>
+
+            <!-- Discount Value -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Discount Value</div>
+                <input type="number" class="pinputText pinputText300px" pInputText formControlName="discountValue">
+            </div>
+
+            <!-- Total Amount -->
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Final Amount</div>
+                <input type="number" class="pinputText pinputText300px" pInputText formControlName="finalAmount"
+                    readonly>
+            </div>
+
+        </form>
+
+        <!-- Buttons -->
+        <div class="mt40" *ngIf="action != 'view'">
+            <button type="submit" class="success-btn fw600 addlPaddingNBorder" [disabled]="!studentFeeForm.valid">
+                <span *ngIf="action == 'save'">Save</span>
+                <span *ngIf="action == 'edit'">Update</span>
+            </button>
+
+            <button type="button" class="cancel-btn ml10 fw600" (click)="navigateMenu('home/fees')">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>

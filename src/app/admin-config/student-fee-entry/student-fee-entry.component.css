@@ -1,0 +1,51 @@
+.expandBtn{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:14px;
+}
+
+/* expansion background */
+
+.expansionRow{
+background:#fafafa;
+}
+
+/* fee container */
+
+.feeBox{
+padding:15px;
+}
+
+/* fee table */
+
+.feeTable{
+width:400px;
+border-collapse:collapse;
+}
+
+.feeTable th{
+background:#f5f5f5;
+text-align:left;
+padding:8px;
+font-weight:600;
+}
+
+.feeTable td{
+padding:8px;
+border-bottom:1px solid #eee;
+}
+
+/* total highlight */
+
+.totalRow{
+background:#fff7e6;
+font-weight:600;
+}
+
+/* total fee main table */
+
+.totalFee{
+font-weight:600;
+color:#2e7d32;
+}

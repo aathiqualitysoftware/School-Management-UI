@@ -49,6 +49,10 @@ import { TransactionHistoryComponent } from './admin-config/transaction-history/
 import { CreateAttendanceComponent } from './admin-config/create-attendance/create-attendance.component';
 import { CreateAcademicYearComponent } from './admin-config/create-academic-year/create-academic-year.component';
 import { AcademicYearComponent } from './admin-config/academic-year/academic-year.component';
+import { CreateStudentFeeEntryComponent } from './admin-config/create-student-fee-entry/create-student-fee-entry.component';
+import { StudentFeeEntryComponent } from './admin-config/student-fee-entry/student-fee-entry.component';
+import { FeeCollectionComponent } from './admin-config/fee-collection/fee-collection.component';
+import { CreateFeeCollectionComponent } from './admin-config/create-fee-collection/create-fee-collection.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // show login first
   // {
@@ -219,10 +223,22 @@ export const routes: Routes = [
       },
       {
         path: 'admin-config/fees',
-        component: FeesComponent,
+        component: FeeCollectionComponent,
         canActivate: [RoleGuard],
         data: {
           expectedRoles: Constants.PORTAL_DESKTOP
+        }
+      },
+       {
+        path: 'admin-config/fees/create-fee-collection',
+        component: CreateFeeCollectionComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRoles: {
+            "view": Constants.PORTAL_DESKTOP,
+            "edit": Constants.PORTAL_DESKTOP,
+            "save": Constants.PORTAL_DESKTOP
+          }
         }
       },
       {
@@ -265,6 +281,26 @@ export const routes: Routes = [
       {
         path: 'admin-config/years/create-year',
         component: CreateAcademicYearComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRoles: {
+            "view": Constants.PORTAL_DESKTOP,
+            "edit": Constants.PORTAL_DESKTOP,
+            "save": Constants.PORTAL_DESKTOP
+          }
+        }
+      },
+      {
+        path: 'admin-config/studentfeeentry',
+        component: StudentFeeEntryComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRoles: Constants.PORTAL_DESKTOP
+        }
+      },
+      {
+        path: 'admin-config/studentfeeentry/create-studentfeeentry',
+        component: CreateStudentFeeEntryComponent,
         canActivate: [RoleGuard],
         data: {
           expectedRoles: {

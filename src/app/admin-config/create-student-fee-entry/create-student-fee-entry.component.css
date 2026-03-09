@@ -1,0 +1,32 @@
+.feeTable{
+  width:50%;
+  border-collapse: collapse;
+}
+
+.feeTable th{
+  background:#f5f5f5;
+  padding:10px;
+  text-align:left;
+  border:1px solid #ddd;
+}
+
+.feeTable td{
+  padding:10px;
+  border:1px solid #ddd;
+}
+
+.addBtn{
+  background:#860063;
+  color:white;
+  padding:6px 14px;
+  border:none;
+  border-radius:4px;
+}
+
+.removeBtn{
+  background:#e74c3c;
+  color:white;
+  padding:5px 10px;
+  border:none;
+  border-radius:4px;
+}

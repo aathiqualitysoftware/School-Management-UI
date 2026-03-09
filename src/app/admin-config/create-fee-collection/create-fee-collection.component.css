@@ -1,0 +1,12 @@
+.feeTable{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+.feeTable th,
+.feeTable td{
+border:1px solid #ddd;
+padding:10px;
+text-align:left;
+}
