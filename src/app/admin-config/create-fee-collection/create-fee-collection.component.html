@@ -51,10 +51,10 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Payment Mode</div>
                 <p-dropdown class="pDropdown pDropdown300px" [options]="paymentModes" formControlName="paymentMode"
-                    optionLabel="label" placeholder="Select Payment Mode">
+                    optionLabel="name" placeholder="Select Payment Mode">
                     <ng-template let-pay pTemplate="item">
                         <div class="align-items-center gap-0 dropdown-items">
-                            <div>{{pay.label}}</div>
+                            <div>{{pay.name}}</div>
                         </div>
                     </ng-template>
                 </p-dropdown>

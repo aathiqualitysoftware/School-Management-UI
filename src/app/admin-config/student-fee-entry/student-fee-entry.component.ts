@@ -81,11 +81,8 @@ export class StudentFeeEntryComponent {
   expandedRowKeys: any = {};
 
   onRowExpand(rowData: any) {
-
     this.expandedRowKeys = {};
-
     this.expandedRowKeys[rowData.id] = true;
-
   }
   isRoleReadOnly() {
     return this.readOnlyRoles.some(ai => this.userRoles.includes(ai));

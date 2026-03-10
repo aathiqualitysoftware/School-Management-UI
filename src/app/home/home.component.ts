@@ -300,6 +300,12 @@ export class HomeComponent implements OnInit, AfterContentChecked {
       "roles": Constants.PORTAL_DESKTOP
     },
     {
+      "navName": "Mark Entry",
+      "navIcon": "assets/images/portal-config-icon.svg",
+      "navURL": "home/admin-config/mark-entry",
+      "roles": Constants.PORTAL_DESKTOP
+    },
+    {
       "navName": "Student Fee Entry",
       "navIcon": "assets/images/portal-config-icon.svg",
       "navURL": "home/admin-config/studentfeeentry",

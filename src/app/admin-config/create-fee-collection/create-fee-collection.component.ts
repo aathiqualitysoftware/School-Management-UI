@@ -72,52 +72,10 @@ export class CreateFeeCollectionComponent {
   showLoading = false;
   showUpdateButton = false;
   portalConfigs: any[] | undefined; editPortalConfig: any;
-  paymentModes = [
-    { label: 'Cash', value: 'Cash' },
-    { label: 'UPI', value: 'UPI' },
-    { label: 'Card', value: 'Card' },
-    { label: 'Bank Transfer', value: 'Bank' }
-  ];
+  paymentModes: any[] = [];
 
   Classes: any[] = [];
-  feeHeads = [
-    {
-      "masterId": 1,
-      "name": "Tuition Fee",
-      "displayOrder": 1,
-      "isActive": true
-    },
-    {
-      "masterId": 2,
-      "name": "Transport Fee",
-      "displayOrder": 2,
-      "isActive": true
-    },
-    {
-      "masterId": 3,
-      "name": "Exam Fee",
-      "displayOrder": 3,
-      "isActive": true
-    },
-    {
-      "masterId": 29,
-      "name": "Admission Fee",
-      "displayOrder": 4,
-      "isActive": true
-    },
-    {
-      "masterId": 29,
-      "name": "Hostel Room Fee",
-      "displayOrder": 5,
-      "isActive": true
-    },
-    {
-      "masterId": 29,
-      "name": "Hostel Food Fee",
-      "displayOrder": 6,
-      "isActive": true
-    }
-  ];
+  feeHeads: any[] = [];
   feeCollectionForm = new FormGroup({
     student: new FormControl('', Validators.required),
     class: new FormControl({ value: '', disabled: true }),
@@ -199,7 +157,8 @@ export class CreateFeeCollectionComponent {
         this.createfeecollectionApiService.getAllMasterData()
       );
       this.Classes = response?.data?.classesList || [];
-      // this.feeHeads = response?.data?.feeHeadList || [];
+      this.feeHeads = response?.data?.feeHeadList || [];
+      this.paymentModes = response?.data?.paymentModeList || [];
     } catch (err) {
       console.error(err);
     }

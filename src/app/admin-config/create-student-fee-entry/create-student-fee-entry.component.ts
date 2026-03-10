@@ -162,7 +162,7 @@ export class CreateStudentFeeEntryComponent {
       );
       this.Classes = response?.data?.classesList || [];
       this.feeHeads = response?.data?.feeHeadList || [];
-      this.collectionTypes = response?.data?.collectionTypeList || [];
+      this.collectionTypes = response?.data?.feeCollectionTypeList || [];
       this.discountTypes = response?.data?.discountTypeList || [];
     } catch (err) {
       console.error(err);

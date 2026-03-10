@@ -53,6 +53,7 @@ import { CreateStudentFeeEntryComponent } from './admin-config/create-student-fe
 import { StudentFeeEntryComponent } from './admin-config/student-fee-entry/student-fee-entry.component';
 import { FeeCollectionComponent } from './admin-config/fee-collection/fee-collection.component';
 import { CreateFeeCollectionComponent } from './admin-config/create-fee-collection/create-fee-collection.component';
+import { MarkEntryComponent } from './admin-config/mark-entry/mark-entry.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // show login first
   // {
@@ -229,7 +230,15 @@ export const routes: Routes = [
           expectedRoles: Constants.PORTAL_DESKTOP
         }
       },
-       {
+      {
+        path: 'admin-config/mark-entry',
+        component: MarkEntryComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRoles: Constants.PORTAL_DESKTOP
+        }
+      },
+      {
         path: 'admin-config/fees/create-fee-collection',
         component: CreateFeeCollectionComponent,
         canActivate: [RoleGuard],

@@ -1,0 +1,143 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Exam Management</div>
+    <div class="gilroyNormal s13 fw600">Exam</div>
+
+    <div class="whiteDivision">
+        <div class="dropdownComponent">
+            <div class="dropdownName">Class</div>
+            <p-dropdown class="pDropdown pDropdown300px" [(ngModel)]="selectedclass" [options]="Classes"
+                optionLabel="name" filterBy="name" placeholder="Select Class" [filter]="true" [showClear]="true"
+                (onChange)="getSectionData($event.value.masterId);getclasssection()">
+                <ng-template let-cls pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{cls.name}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="dropdownComponent ml12">
+            <div class="dropdownName">Section</div>
+            <p-dropdown class="pDropdown pDropdown300px" [(ngModel)]="selectedsection" [options]="sections"
+                optionLabel="sectionName" filterBy="sectionName" placeholder="Select Section" [filter]="true"
+                [showClear]="true" (onChange)="getclasssection()">
+                <ng-template let-sec pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{sec.sectionName}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="dropdownComponent ml12">
+            <div class="dropdownName">Subjects</div>
+            <p-dropdown class="pDropdown pDropdown300px" [(ngModel)]="selectedsubject" [options]="filteredsubjects"
+                optionLabel="name" filterBy="name" placeholder="Select Subject" [filter]="true" [showClear]="true"
+                (onChange)="getexambyclasssubject()">
+                <ng-template let-sub pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{sub.name}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="dropdownComponent">
+            <div class="dropdownName">Exams</div>
+            <p-dropdown class="pDropdown pDropdown300px" [(ngModel)]="selectedexam" [options]="filteredExam"
+                optionLabel="uniqueExamCode" filterBy="uniqueExamCode" placeholder="Select Subject" [filter]="true"
+                [showClear]="true">
+                <ng-template let-exm pTemplate="item">
+                    <div class="align-items-center gap-0 dropdown-items">
+                        <div>{{exm.uniqueExamCode}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="disp-inline-block v-align-bottom">
+            <div [class]="selectedclass && selectedsection && selectedsubject && selectedexam ? 'active-btn ml15' : 'inactive-btn ml15'"
+                (click)=" selectedclass && selectedsection && selectedsubject && selectedexam ? getstudentdata() : ''"
+                [style.width]="enableSearchLoading ? '130px' : '90px'" style="transition: width .5s"
+                [style.cursor]="enableSearchLoading ? 'not-allowed' : ''">
+                <span *ngIf="!enableSearchLoading">Search</span>
+                <span *ngIf="enableSearchLoading"><i class="pi pi-spin pi-spinner"
+                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Searching...</span>
+            </div>
+            <div [class]="selectedclass && selectedsection && selectedsubject && selectedexam ? 'reset-btn ml10 reset-btn-enabled' : 'reset-btn ml10'"
+                (click)="selectedclass && selectedsection && selectedsubject && selectedexam ? resetFilter() : ''">Reset
+            </div>
+        </div>
+    </div>
+
+    <div class="whiteDivision" style="margin-top: 18px; padding-bottom: 0px;">
+
+        <div class="grid-table">
+            <p-table #dt1 [value]="students" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData" [paginator]="true"
+                [rows]="tableRows" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                [globalFilterFields]="['studentId','firstName','rollNumber']"
+                styleClass="p-datatable-sm table-generic-style">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" pSortableColumn="studentId"> Id<p-sortIcon field="studentId"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="firstName"> Student Name<p-sortIcon
+                                field="firstName"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="rollNumber"> Roll Number<p-sortIcon
+                                field="rollNumber"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="mark"> Mark<p-sortIcon field="mark"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="grade"> Grade<p-sortIcon field="grade"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="status"> Status<p-sortIcon field="status"></p-sortIcon>
+                        </th>
+                        <!-- <th scope="col" pSortableColumn="rank"> Rank<p-sortIcon field="rank"></p-sortIcon>
+                        </th> -->
+                        <!-- <th scope="col" pSortableColumn="action"> Action<p-sortIcon field="action"></p-sortIcon>
+                        </th> -->
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-sub let-i="rowIndex">
+                    <tr>
+                        <td>{{sub.studentId}}</td>
+                        <td>{{sub.firstName}}</td>
+                        <td>{{sub.rollNumber}}</td>
+                        <td>
+                            <input type="number" [(ngModel)]="sub.mark" min="0" max="100" step="1"
+                                (input)="markChange(i)">
+
+                            <!-- <div class="textboxComponent mt5 mr18 mh70">
+                                <div class="textboxName">Middle Name</div>
+                                <input type="text" pInputText [(ngModel)]="sub.mark" (input)="markChange(i)"
+                                    class="pinputText pinputText300px" />
+                            </div> -->
+                        </td>
+                        <td>{{sub.grade }}</td>
+                        <td>{{sub.status }}</td>
+                        <!-- <td>{{sub.rank }}</td> -->
+                        <!-- <td class="editArea" style="text-align: center;">
+                            <span (click)="editContent(sub,i)">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-file-edit editiconSize fontBlack"></i>
+                                <span class="v-align-mid fw600 fontBlack">Edit</span>
+                            </span>
+                        </td> -->
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="mt40">
+            <button type="submit" *ngIf="students.length>0" class="success-btn fw600 addlPaddingNBorder"
+                [style.background-color]="showLoading ? '#860063' : ''" (click)="onSubmit()"
+                [style.width]="showLoading ? '130px' : ''">
+                <span *ngIf="!showLoading">Submit</span>
+                <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
+                        style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
+            </button>
+        </div>
+    </div>
+
+
+
+</div>

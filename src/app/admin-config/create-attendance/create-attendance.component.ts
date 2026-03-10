@@ -38,13 +38,8 @@ export class CreateAttendanceComponent {
   minDate!: Date;
   maxDate!: Date;
   students: any[] = []; enableSearchLoading = false;
-  // [{ name: 'Class 1', value: '1' }, { name: 'Class 2', value: '2' }];
-  //  [{ name: 'A', value: 'A' }, { name: 'B', value: 'B' }];
-  // [
-  //   { name: 'ASMA', class: 'Class 1', section: 'A', status: 'Present' },
-  //   { name: 'DARSHANA', class: 'Class 1', section: 'A', status: 'Present' },
-  //   { name: 'Dhanya', class: 'Class 2', section: 'B', status: 'Absent' }
-  // ];
+  selectedSession: any;
+  sessions: any[] = [];
   tableMultiSortingMetaData = [{ field: 'createdDateTime', order: -1 }];
   tableRows = 5;
   selectedDate!: Date;
@@ -73,6 +68,7 @@ export class CreateAttendanceComponent {
     this.getclassdata();
     this.getsectiondata();
     this.getstudentdata();
+    this.getAllmasterdata();
   }
   formatDate(date: Date): string {
     const year = date.getFullYear();
@@ -84,8 +80,17 @@ export class CreateAttendanceComponent {
   getStudentName(id: number) {
     return this.students?.find(c => c.id == id)?.firstName || '';
   }
+  getAllmasterdata() {
+    this.createattapiservice.getAllMasterData().subscribe({
+      next: (response: any) => {
+        this.sessions = response?.data?.sessionList || [];
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
   getattendance() {
-    debugger;
     const formattedDate = this.formatDate(this.selectedDate);
     const classId = this.selectedClass?.masterId;
     const sectionId = this.selectedSection?.id;

@@ -84,8 +84,13 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Collection Type</div>
                 <p-dropdown class="pDropdown pDropdown300px" [options]="collectionTypes"
-                    formControlName="collectionType" optionLabel="label" placeholder="Select Collection Type"
+                    formControlName="collectionType" optionLabel="name" placeholder="Select Collection Type"
                     [showClear]="true">
+                    <ng-template let-coll pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{coll.name}}</div>
+                        </div>
+                    </ng-template>
                 </p-dropdown>
             </div>
 
@@ -134,8 +139,13 @@
                             <!-- Fee Head -->
                             <td>
                                 <p-dropdown class="pDropdown pDropdown300px" [options]="feeHeads"
-                                    formControlName="feeHead" optionLabel="fee_head_name" placeholder="Select Fee Head"
+                                    formControlName="feeHead" optionLabel="name" placeholder="Select Fee Head"
                                     [filter]="true">
+                                    <ng-template let-feehd pTemplate="item">
+                                        <div class="align-items-center gap-0 dropdown-items">
+                                            <div>{{feehd.name}}</div>
+                                        </div>
+                                    </ng-template>
                                 </p-dropdown>
                             </td>
                             <!-- Amount -->
@@ -162,7 +172,12 @@
             <div class="dropdownComponent mt5 mr18 mh70">
                 <div class="dropdownName">Discount Type</div>
                 <p-dropdown class="pDropdown pDropdown300px" [options]="discountTypes" formControlName="discountType"
-                    optionLabel="label" placeholder="Select Discount Type" [showClear]="true">
+                    optionLabel="name" placeholder="Select Discount Type" [showClear]="true">
+                    <ng-template let-dis pTemplate="item">
+                        <div class="align-items-center gap-0 dropdown-items">
+                            <div>{{dis.name}}</div>
+                        </div>
+                    </ng-template>
                 </p-dropdown>
             </div>
 
