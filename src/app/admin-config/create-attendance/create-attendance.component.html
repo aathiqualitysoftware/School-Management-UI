@@ -49,7 +49,7 @@
 
     <div class="whiteDivision" style="margin-top: 18px; padding-bottom: 0px;">
         <div class="search-n-heading-component">
-            <div class="dropdownComponent mt5 mr18 mh70">
+            <div class="dropdownComponent ml12">
                 <div class="dropdownName">Session</div>
                 <p-dropdown class="pDropdown pDropdown300px" [options]="sessions" [(ngModel)]="selectedSession"
                     optionLabel="name" filterBy="name" placeholder="Select Session" [filter]="true" [showClear]="true">
@@ -59,6 +59,11 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
+            </div>
+            <div class="dropdownComponent ml12">
+                <div class="dropdownName">All Present</div>
+                <p-inputSwitch [(ngModel)]="allPresent" (onChange)="setAllPresent()">
+                </p-inputSwitch>
             </div>
         </div>
         <div class="grid-table">
@@ -85,10 +90,11 @@
                         <td>{{selectedClass.name}}</td>
                         <td>{{selectedSection.sectionName}}</td>
                         <td>
-                            <p-radioButton name="s{{i}}" [value]="true"
-                                [(ngModel)]="student.attendanceStatus"></p-radioButton>
+                            <p-radioButton name="s{{i}}" [value]="true" [(ngModel)]="student.attendanceStatus"
+                                (onClick)="checkAllPresent()">
+                            </p-radioButton>
                             Present
-                            <p-radioButton name="s{{i}}" [value]="false"
+                            <p-radioButton name="s{{i}}" [value]="false" (onClick)="checkAllPresent()"
                                 [(ngModel)]="student.attendanceStatus"></p-radioButton> Absent
                             <!-- <p-radioButton name="s{{i}}" value="Late" [(ngModel)]="student.attendanceStatus"></p-radioButton> Late -->
                         </td>

@@ -37,33 +37,11 @@ export class CreateFeeCollectionComponent {
 
   sections: any[] = [];
   students = [{
-    "studentId": 12,
-    "firstName": "vency",
-    "classId": 14,
-    "sectionId": 2,
-    "academicYearId": 3,
-    "collectionType": "Monthly",
-    "dueDate": "2026-03-30",
-    "feeDetails": [
-      {
-        "feeHeadId": 1,
-        "feeHeadName": "Tuition Fee",
-        "amount": 5000
-      },
-      {
-        "feeHeadId": 2,
-        "feeHeadName": "Transport Fee",
-        "amount": 2000
-      },
-      {
-        "feeHeadId": 3,
-        "feeHeadName": "Exam Fee",
-        "amount": 1000
-      }
-    ],
-    "discountType": "Amount",
-    "discountValue": 500,
-    "finalAmount": 7500
+    "studentId": 12, "firstName": "vency", "classId": 14, "sectionId": 2, "academicYearId": 3, "class": 'Class 1', "section": "A", "Total": 8000, "PaidAmount": 3000,
+    "BalAmount": 4500, "collectionType": "Monthly", "dueDate": "2026-03-30", "discountType": "Percentage", "discountValue": 500, "finalAmount": 7500,
+    "feeDetails": [{ "feeHeadId": 1, "feeHeadName": "Tuition Fee", "amount": 5000, "paidAmount": 1000 },
+    { "feeHeadId": 2, "feeHeadName": "Transport Fee", "amount": 2000, "paidAmount": 1000 },
+    { "feeHeadId": 3, "feeHeadName": "Exam Fee", "amount": 1000, "paidAmount": 1000 }]
   }];
   studentFees: any[] = [];
 

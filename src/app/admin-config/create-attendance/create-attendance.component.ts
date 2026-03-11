@@ -16,14 +16,14 @@ import { CreateAttendanceApiService } from './create-attendance-api.service';
 import { EnvironmentService } from '../../environment.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { InputSwitchModule } from 'primeng/inputswitch';
 @Component({
   selector: 'app-create-attendance',
   standalone: true,
   providers: [ConfirmationService, MessageService, DatePipe],
   imports: [RadioButtonModule, CalendarModule,
     DropdownModule,
-    TableModule,
+    TableModule, InputSwitchModule,
     ToastModule, ProgressSpinnerModule,
     InputTextModule, ReactiveFormsModule, CommonModule, FormsModule,
     DialogModule,
@@ -33,6 +33,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   styleUrl: './create-attendance.component.css'
 })
 export class CreateAttendanceComponent {
+  allPresent: boolean = false;
   classes: any[] = [];
   sections: any[] = [];
   minDate!: Date;
@@ -179,6 +180,23 @@ export class CreateAttendanceComponent {
     );
   }
 
+  checkAllPresent() {
+    const allPresent = this.attendance.every(s => s.attendanceStatus === true);
+    this.allPresent = allPresent;
+  }
+
+  setAllPresent() {
+    if (this.allPresent) {
+      this.attendance.forEach(student => {
+        student.attendanceStatus = true;
+      });
+    } else {
+      this.attendance.forEach(student => {
+        student.attendanceStatus = false;
+      });
+    }
+  }
+
   resetFilters() {
     this.setDefaults();
   }
@@ -191,7 +209,7 @@ export class CreateAttendanceComponent {
         // attendanceDate: this.formatDate(this.selectedDate),
         attendanceDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
         attendanceStatus: this.attendance[0].attendanceStatus,
-        remarks: "",
+        session: this.selectedSession.masterId,
         createdBy: "SYSTEM",
         createdDateTime: new Date(),
         updatedBy: "SYSTEM",
@@ -213,7 +231,7 @@ export class CreateAttendanceComponent {
         studentId: this.attendance[0].studentId,
         attendanceDate: this.formatDate(this.selectedDate),
         attendanceStatus: this.attendance[0].attendanceStatus,
-        remarks: "",
+        session: this.selectedSession.masterId,
         createdBy: "SYSTEM",
         createdDateTime: new Date(),
         updatedBy: "SYSTEM",

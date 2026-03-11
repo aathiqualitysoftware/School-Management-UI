@@ -112,33 +112,6 @@ export class MarkEntryComponent {
   getstudentdata() {
     this.markentryapiservice.getStudentsByClassSection(this.selectedclass.masterId, this.selectedsection.id).subscribe({
       next: (response) => {
-        // var response = [
-        //   {
-        //     "studentId": 1,
-        //     "firstName": "Arun",
-        //     "rollNumber": 1
-        //   },
-        //   {
-        //     "studentId": 2,
-        //     "firstName": "Bala",
-        //     "rollNumber": 2
-        //   },
-        //   {
-        //     "studentId": 3,
-        //     "firstName": "Karthik",
-        //     "rollNumber": 3
-        //   },
-        //   {
-        //     "studentId": 4,
-        //     "firstName": "Divya",
-        //     "rollNumber": 4
-        //   },
-        //   {
-        //     "studentId": 5,
-        //     "firstName": "Priya",
-        //     "rollNumber": 5
-        //   }
-        // ];
         this.students = response.map((stu: any) => ({
           ...stu,
           mark: null,
