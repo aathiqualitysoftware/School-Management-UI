@@ -1,0 +1,150 @@
+<p-toast position="top-center"></p-toast>
+<div class="p15 pl25">
+
+    <div class="gilroyNormal s13 fw600">Gate Pass</div>
+
+    <div class="whiteDivision" *ngIf="userRole==='STUDENT' && gatePassList.length<=0"
+        style="min-height: calc(100vh - 161px);">
+        <div class="gilroyNormal fontMediumBlack fw600 s11 mb25">Please fill below details to create Gate Pass</div>
+        <form [formGroup]="form">
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Reason</div>
+                <input type="text" class="pinputText pinputText300px" pInputText formControlName="reason">
+                <div
+                    *ngIf="form.controls.reason.invalid && (form.controls.reason.dirty || form.controls.reason.touched)">
+                    <div *ngIf="form.controls.reason.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('reason',form.controls.reason.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">From Date</div>
+                <p-calendar formControlName="fromDate" [showTime]="true" hourFormat="24" [showIcon]="true"
+                    dateFormat="dd/mm/yy" class="dateInput" inputId="fromDate" [style]="{'width':'300px'}"
+                    [iconDisplay]="'input'">
+                </p-calendar>
+                <div
+                    *ngIf="form.controls.fromDate.invalid && (form.controls.fromDate.dirty || form.controls.fromDate.touched)">
+                    <div *ngIf="form.controls.fromDate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('fromDate',form.controls.fromDate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="dropdownComponent mt5 mr18 mh70">
+                <div class="dropdownName">End Time</div>
+                <p-calendar formControlName="toDate" [showTime]="true" hourFormat="24" [showIcon]="true"
+                    dateFormat="dd/mm/yy" class="dateInput" inputId="toDate" [style]="{'width':'300px'}"
+                    [iconDisplay]="'input'">
+                </p-calendar>
+                <div *ngIf="form.errors?.['dateInvalid'] && form.get('toDate')?.touched">
+                    <div *ngIf="form.errors?.['dateInvalid'] && form.get('toDate')?.touched"
+                        class="gilroyNormal fontRed s11 mt5">
+                        To Date must be greater than From Date
+                    </div>
+                </div>
+                <div
+                    *ngIf="form.controls.toDate.invalid && (form.controls.toDate.dirty || form.controls.toDate.touched)">
+                    <div *ngIf="form.controls.toDate.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('toDate',form.controls.toDate.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="textboxComponent mt5 mr18 mh70">
+                <div class="textboxName">Place</div>
+                <input type="text" class="pinputText pinputText300px" pInputText formControlName="place">
+                <div *ngIf="form.controls.place.invalid && (form.controls.place.dirty || form.controls.place.touched)">
+                    <div *ngIf="form.controls.place.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('place',form.controls.place.errors)}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt10">
+                <div class="success-btn" (click)="sendOtp()" *ngIf="!otpSent">Send OTP</div>
+
+                <div class="textboxComponent mt5 mr18 mh70" *ngIf="otpSent && !otpVerified">
+                    <div class="textboxName">Enter OTP</div>
+                    <input type="text" class="pinputText pinputText300px" pInputText [(ngModel)]="enteredOtp">
+                </div>
+
+                <div class="success-btn mt10" (click)="verifyOtp()" *ngIf="otpSent && !otpVerified">
+                    Verify OTP
+                </div>
+                <div class="mt10" *ngIf="otpVerified" style="color: green; font-weight: 600;">
+                    OTP Verified ✔
+                </div>
+                <div class="success-btn mt10" [class.inactive-btn]="!otpVerified" *ngIf="otpVerified"
+                    [style.cursor]="!otpVerified ? 'not-allowed' : 'pointer'" (click)="otpVerified ? submit() : ''">
+                    Submit Request
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- LIST VIEW (WARDEN + SECURITY) -->
+<div class="whiteDivision" style="margin-top: 18px;">
+
+    <div class="search-n-heading-component">
+        <div class="disp-inline-block">
+            <div class="gilroyNormal s13 fw600 mb7">Gate Pass List</div>
+            <div class="gilroyNormal fontLightGrey s11">
+                Total {{gatePassList.length}} Records
+            </div>
+        </div>
+    </div>
+    <div class="grid-table">
+        <p-table [value]="gatePassList" styleClass="p-datatable-sm table-generic-style">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th *ngIf="userRole==='WARDEN' || userRole==='SECURITY'">Stuent Details</th>
+                    <th>Reason</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Status</th>
+                    <th *ngIf="userRole==='WARDEN' || userRole==='SECURITY'">Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-pass>
+                <tr>
+                    <td *ngIf="userRole==='WARDEN' || userRole==='SECURITY'">{{pass.studentId}} - {{pass.studentName}} -
+                        {{pass.className}} - {{pass.sectionName}}</td>
+                    <td>{{pass.reason}}</td>
+                    <td>{{pass.fromDate | date:'dd-MM-yyyy hh:mm a'}}</td>
+                    <td>{{pass.toDate | date:'dd-MM-yyyy hh:mm a'}}</td>
+                    <td>
+                        <span class="status-badge {{pass.status}}">
+                            {{pass.status}}
+                        </span>
+                    </td>
+                    <td *ngIf="userRole==='WARDEN' || userRole==='SECURITY'">
+                        <!-- WARDEN -->
+                        <span *ngIf="userRole==='WARDEN' && pass.status==='PENDING'">
+                            <span (click)="approve(pass)" class="status-badge APPROVED">Approve</span> |
+                            <span (click)="reject(pass)" class="status-badge REJECT">Reject</span>
+                        </span>
+                        <!-- SECURITY / RETURN -->
+                        <span *ngIf="userRole==='SECURITY' && pass.status==='APPROVED'">
+                            <!-- <span (click)="markReturn(pass)" class="button">Return Entry</span> -->
+
+                            <button class="p-button-sm submit-small" pButton label="Return Entry"
+                                (click)="markReturn(pass)">
+                            </button>
+                        </span>
+                        <!-- STATUS SHOW -->
+                        <!-- <span *ngIf="userRole==='STUDENT'">
+                            {{pass.status}}
+                        </span> -->
+                    </td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+
+    </div>
+</div>

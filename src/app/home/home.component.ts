@@ -294,6 +294,12 @@ export class HomeComponent implements OnInit, AfterContentChecked {
       "roles": Constants.PORTAL_DESKTOP
     },
     {
+      "navName": "Hostel Gate Pass",
+      "navIcon": "assets/images/portal-config-icon.svg",
+      "navURL": "home/admin-config/gate-pass",
+      "roles": Constants.PORTAL_DESKTOP
+    },
+    {
       "navName": "Attendance",
       "navIcon": "assets/images/portal-config-icon.svg",
       "navURL": "home/admin-config/attendance",

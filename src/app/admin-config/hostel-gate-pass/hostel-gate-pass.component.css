@@ -1,0 +1,22 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.APPROVED {
+    background: #2ecc71;
+}
+.REJECT {
+    background: #cc1212;
+}
+
+.PENDING {
+    background: #dad619;
+}
