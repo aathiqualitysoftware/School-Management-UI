@@ -276,6 +276,12 @@ export class HomeComponent implements OnInit, AfterContentChecked {
       "roles": Constants.PORTAL_DESKTOP
     },
     {
+      "navName": "Expense",
+      "navIcon": "assets/images/portal-config-icon.svg",
+      "navURL": "home/admin-config/expense",
+      "roles": Constants.PORTAL_DESKTOP
+    },
+    {
       "navName": "Students",
       "navIcon": "assets/images/portal-config-icon.svg",
       "navURL": "home/admin-config/student",

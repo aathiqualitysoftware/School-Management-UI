@@ -1,0 +1,99 @@
+<p-toast position="top-center" key="tcc"></p-toast>
+<div class="p15 pl25">
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Expense</div>
+    <div class="gilroyNormal s13 fw600">Expense</div>
+
+    <!-- min-height: calc(100vh - 210px);  -->
+    <div class="whiteDivision" style="margin-top: 18px; padding-bottom: 0px;">
+        <div class="search-n-heading-component">
+            <div class="disp-inline-block">
+                <div class="gilroyNormal s13 fw600 mb7">Expense List</div>
+                <div class="gilroyNormal fontLightGrey s11">
+                    Total {{expenses.length}} Expenses
+                </div>
+            </div>
+            <div class="disp-inline-block float-r">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText class="inputtext-search" placeholder="Search by Expense Name"
+                        [(ngModel)]="searchText" (ngModelChange)="applyGlobalFilter(searchText, 'contains')" />
+                </span>
+                <div class="success-btn ml12 success-btn-enabled" (click)="createContent()">
+                    <i class="pi pi-plus"></i>
+                    Add New Expense
+                </div>
+            </div>
+        </div>
+        <div class="grid-table">
+            <p-table #dt1 [value]="expenses" dataKey="id" [multiSortMeta]="tableMultiSortingMetaData" [paginator]="true"
+                [rows]="tableRows" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[5, 10, 20, 50]" sortMode="multiple"
+                [globalFilterFields]="['name','expenseHeadname','invoiceNumber','date','amount','description']"
+                styleClass="p-datatable-sm table-generic-style">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" pSortableColumn="name"> Expense Name<p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="expenseHeadname"> Expense Head Name<p-sortIcon
+                                field="expenseHeadname"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="invoiceNumber"> Invoice Number<p-sortIcon
+                                field="ivoiceNumber"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="date"> Date<p-sortIcon field="date"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="amount"> Amount<p-sortIcon field="amount"></p-sortIcon>
+                        </th>
+                        <th scope="col" pSortableColumn="description"> Description<p-sortIcon
+                                field="description"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-exp let-i="rowIndex">
+                    <tr>
+                        <td>{{exp.name}}</td>
+                        <td>{{exp.expenseHeadname}}</td>
+                        <td>{{exp.invoiceNumber}}</td>
+                        <td>{{exp.date}}</td>
+                        <td>{{exp.amount}}</td>
+                        <td>{{exp.description}}</td>
+                        <td class="editArea" style="text-align: center;">
+                            <span (click)="viewContent(exp)">
+                                <i class="pi pi-external-link editiconSize s8 mr3"></i>
+                                <span class="v-align-mid fw600 ">View</span>
+                            </span>
+                            <span (click)="editContent(exp)">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-file-edit editiconSize fontBlack"></i>
+                                <span class="v-align-mid fw600 fontBlack">Edit</span>
+                            </span>
+                            <span (click)="confirm($event, exp)">
+                                <span class="v-align-mid fontLightGrey ml2 mr2"> | </span>
+                                <i class="pi pi-trash editiconSize fontRed"></i>
+                                <span class="v-align-mid fw600 fontRed">Delete</span>
+                            </span>
+                            <div class="card flex justify-content-center gap-2">
+                                <p-confirmPopup styleClass="confirmpopup">
+                                    <ng-template pTemplate="headless" let-message let-test>
+                                        <div class="gilroyNormal s12 mb12">{{ message.message }}</div>
+                                        <div class="flex align-items-center gap-2 mt-3">
+                                            <div (click)="!deleteLoading ? confirmPopup() : ''"
+                                                class="success-btn deleteConfirmBtn success-btn-enabled"
+                                                [style.width]="deleteLoading ? '130px' : ''"
+                                                [style.cursor]="deleteLoading ? 'not-allowed' : 'pointer'">
+                                                <i *ngIf="deleteLoading" class="pi pi-spin pi-spinner"
+                                                    style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>{{deleteCnfText}}
+                                            </div>
+                                            <div (click)="cancelPopup()" class="cancel-btn ml10">Cancel</div>
+                                        </div>
+                                    </ng-template>
+                                </p-confirmPopup>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

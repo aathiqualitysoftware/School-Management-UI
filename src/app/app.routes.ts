@@ -55,6 +55,8 @@ import { FeeCollectionComponent } from './admin-config/fee-collection/fee-collec
 import { CreateFeeCollectionComponent } from './admin-config/create-fee-collection/create-fee-collection.component';
 import { MarkEntryComponent } from './admin-config/mark-entry/mark-entry.component';
 import { HostelGatePassComponent } from './admin-config/hostel-gate-pass/hostel-gate-pass.component';
+import { CreateExpenseComponent } from './admin-config/create-expense/create-expense.component';
+import { ExpenseComponent } from './admin-config/expense/expense.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // show login first
   // {
@@ -279,6 +281,27 @@ export const routes: Routes = [
       {
         path: 'admin-config/exams/create-exam',
         component: CreateExamComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRoles: {
+            "view": Constants.PORTAL_DESKTOP,
+            "edit": Constants.PORTAL_DESKTOP,
+            "save": Constants.PORTAL_DESKTOP
+          }
+        }
+      },
+      {
+        path: 'admin-config/expense',
+        component: ExpenseComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRoles: Constants.PORTAL_DESKTOP
+        }
+      },
+
+      {
+        path: 'admin-config/expense/create-expense',
+        component: CreateExpenseComponent,
         canActivate: [RoleGuard],
         data: {
           expectedRoles: {
