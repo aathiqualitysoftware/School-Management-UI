@@ -40,7 +40,6 @@ export class CreateExpenseComponent {
   selectedPortalConfig: any;
   editPortalConfig: any;
   expenseheads: any[] = [];
-
   constructor(
     private createexpenseapiservice: CreateExpenseApiService,
     private _location: Location, private messageService: MessageService, private route: ActivatedRoute) {
@@ -49,7 +48,7 @@ export class CreateExpenseComponent {
   expenseForm = new FormGroup({
     name: new FormControl("", [Validators.required]),
     expensehead: new FormControl("", [Validators.required]),
-    date: new FormControl("", [Validators.required]),
+    date: new FormControl<Date | null>(null, [Validators.required]),
     description: new FormControl(""),
     invoice: new FormControl(""),
     amount: new FormControl("", [Validators.required])
@@ -73,10 +72,10 @@ export class CreateExpenseComponent {
           name: expenseConfig.name,
           description: expenseConfig.description,
           expensehead: this.expenseheads.find(
-            d => d.masterId == expenseConfig.id
+            d => d.masterId == expenseConfig.expenseHeadId
           ) || null,
-          invoice: expenseConfig.invoice,
-          date: expenseConfig.date,
+          invoice: expenseConfig.invoiceNumber,
+          date: new Date(expenseConfig.date),
           amount: expenseConfig.amount
         });
       }
@@ -108,8 +107,8 @@ export class CreateExpenseComponent {
     let saveConfig: any = {};
     let desgConfig: any = this.expenseForm.value;
     saveConfig.name = desgConfig?.name;
-    saveConfig.invoice = desgConfig?.invoice;
-    saveConfig.expenseheadId = desgConfig?.expensehead?.masterId;
+    saveConfig.invoiceNumber = desgConfig?.invoice;
+    saveConfig.expenseHeadId = desgConfig?.expensehead?.masterId;
     saveConfig.description = desgConfig?.description;
     saveConfig.date = desgConfig?.date;
     saveConfig.amount = desgConfig?.amount;
@@ -133,8 +132,8 @@ export class CreateExpenseComponent {
     let portalConfig: any = this.expenseForm.value;
     let saveConfig: any = {};
     saveConfig.name = portalConfig?.name;
-    saveConfig.invoice = portalConfig?.invoice;
-    saveConfig.expenseheadId = portalConfig?.expensehead?.masterId;
+    saveConfig.invoiceNumber = portalConfig?.invoice;
+    saveConfig.expenseHeadId = portalConfig?.expensehead?.masterId;
     saveConfig.description = portalConfig?.description;
     saveConfig.date = portalConfig?.date;
     saveConfig.amount = portalConfig?.amount;

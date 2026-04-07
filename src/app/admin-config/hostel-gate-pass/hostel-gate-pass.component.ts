@@ -63,21 +63,21 @@ export class HostelGatePassComponent implements OnInit {
   //     "status": "PENDING"
   //   }
   // ];
-  // gatePassList = [ // security
-  //   {
-  //     "id": 1,
-  //     "studentId": 101,
-  //  "className": "10th",
-  //   "sectionName": "A",
-  //     "studentName": "Arun Kumar",
-  //     "reason": "Going to home",
-  //     "fromDate": "2026-03-25T10:00:00",
-  //     "toDate": "2026-03-26T18:00:00",
-  //     "status": "APPROVED"
-  //   }
-  // ]
-  gatePassList: any[] = [];
-  userRole: string = 'STUDENT'; // STUDENT / WARDEN / SECURITY
+  gatePassList = [ // security
+    {
+      "id": 1,
+      "studentId": 101,
+      "className": "10th",
+      "sectionName": "A",
+      "studentName": "Arun Kumar",
+      "reason": "Going to home",
+      "fromDate": "2026-03-25T10:00:00",
+      "toDate": "2026-03-26T18:00:00",
+      "status": "APPROVED"
+    }
+  ]
+  // gatePassList: any[] = [];
+  userRole: string = 'SECURITY'; // STUDENT / WARDEN / SECURITY
   otpSent: boolean = false;
   otpVerified: boolean = false;
   enteredOtp: string = '';

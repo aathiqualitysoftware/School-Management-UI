@@ -56,9 +56,9 @@
                     inputId="date" [style]="{'width':'300px'}" [iconDisplay]="'input'">
                 </p-calendar>
                 <div
-                    *ngIf="expenseForm.controls.expensehead.invalid && (expenseForm.controls.expensehead.dirty || expenseForm.controls.expensehead.touched)">
-                    <div *ngIf="expenseForm.controls.expensehead.errors!= null" class="gilroyNormal fontRed s11 mt5">
-                        {{getErrorMessage('expensehead',expenseForm.controls.expensehead.errors)}}
+                    *ngIf="expenseForm.controls.date.invalid && (expenseForm.controls.date.dirty || expenseForm.controls.date.touched)">
+                    <div *ngIf="expenseForm.controls.date.errors!= null" class="gilroyNormal fontRed s11 mt5">
+                        {{getErrorMessage('date',expenseForm.controls.date.errors)}}
                     </div>
                 </div>
             </div>

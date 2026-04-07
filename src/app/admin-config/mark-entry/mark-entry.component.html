@@ -1,8 +1,7 @@
 <p-toast position="top-center" key="tcc"></p-toast>
 <div class="p15 pl25">
-    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Exam Management</div>
-    <div class="gilroyNormal s13 fw600">Exam</div>
-
+    <div class="gilroyNormal s10 fontLightGrey breadCrumbsArea">Mark Entry Management</div>
+    <div class="gilroyNormal s13 fw600">Mark Entry</div>
     <div class="whiteDivision">
         <div class="dropdownComponent">
             <div class="dropdownName">Class</div>
@@ -78,7 +77,8 @@
                 styleClass="p-datatable-sm table-generic-style">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th scope="col" pSortableColumn="studentId"> Id<p-sortIcon field="studentId"></p-sortIcon>
+                        <th scope="col" pSortableColumn="studentId">Student Id<p-sortIcon
+                                field="studentId"></p-sortIcon>
                         </th>
                         <th scope="col" pSortableColumn="firstName"> Student Name<p-sortIcon
                                 field="firstName"></p-sortIcon>
@@ -131,7 +131,7 @@
             <button type="submit" *ngIf="students.length>0" class="success-btn fw600 addlPaddingNBorder"
                 [style.background-color]="showLoading ? '#860063' : ''" (click)="onSubmit()"
                 [style.width]="showLoading ? '130px' : ''">
-                <span *ngIf="!showLoading">Submit</span>
+                <span *ngIf="!showLoading">{{this.students[0].action}}</span>
                 <span *ngIf="showLoading"><i class="pi pi-spin pi-spinner"
                         style="font-size: 12px; animation: fa-spin 1s infinite linear; margin-right: 5px; margin-left: -5px;"></i>Saving...</span>
             </button>

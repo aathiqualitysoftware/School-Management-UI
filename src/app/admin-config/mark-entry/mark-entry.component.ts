@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Button, ButtonModule } from 'primeng/button';
@@ -110,15 +110,10 @@ export class MarkEntryComponent {
     }
   }
   getstudentdata() {
-    this.markentryapiservice.getStudentsByClassSection(this.selectedclass.masterId, this.selectedsection.id).subscribe({
+    debugger;
+    this.markentryapiservice.getmarkEntryStudentData(this.selectedclass.masterId, this.selectedsection.id, this.selectedexam.id, this.selectedsubject.ClassSubjectId).subscribe({
       next: (response) => {
-        this.students = response.map((stu: any) => ({
-          ...stu,
-          mark: null,
-          grade: '',
-          status: '',
-          rank: null
-        }));
+        this.students = response;
       },
       error: (err: HttpErrorResponse) => {
         this.segregateErrors(err);
@@ -174,14 +169,32 @@ export class MarkEntryComponent {
   }
   @ViewChild('dt1') dt1: Table | undefined;
   onSubmit() {
-
     this.showLoading = true;
-    let data: any = this.students;
+    const payload = {
+      classId: this.selectedclass?.masterId,
+      sectionId: this.selectedsection?.id,
+      examId: this.selectedexam?.id,
+      subjectId: this.selectedsubject?.ClassSubjectId,
 
-    this.markentryapiservice.save(data).subscribe({
+      marks: this.students.map(s => ({
+        studentId: s.studentId,
+        mark: s.mark,
+        grade: s.grade,
+        status: s.status,
+        id: s.id
+      }))
+    };
+    this.markentryapiservice.save(payload).subscribe({
       next: (response) => {
+        debugger;
         this.showLoading = false;
-        this.showToast('SUCCESS', 'Mark Entry created successfully!', 'Students Mark Entry has been created successfully');
+        if (this.students[0].action == 'SUBMIT') {
+          this.showToast('SUCCESS', 'Mark Entry created successfully!', 'Students Mark Entry has been created successfully');
+        } else {
+          this.showToast('SUCCESS', 'Mark Entry updated successfully!', 'Students Mark Entry has been updated successfully');
+        }
+        this.students = [];
+        this.getstudentdata();
       },
       error: (err: HttpErrorResponse) => {
         this.segregateErrors(err);
@@ -204,11 +217,11 @@ export class MarkEntryComponent {
   }
   showToast(status: string, heading: string, toastMessage: string) {
     if (status == 'SUCCESS') {
-      this.messageService.add({ key: 'tc', severity: 'success', life: 5000, summary: heading, detail: toastMessage });
+      this.messageService.add({ key: 'tcc', severity: 'success', life: 5000, summary: heading, detail: toastMessage });
     } else if (status == 'WARNING') {
-      this.messageService.add({ key: 'tc', severity: 'warn', life: 10000, summary: heading, detail: toastMessage });
+      this.messageService.add({ key: 'tcc', severity: 'warn', life: 10000, summary: heading, detail: toastMessage });
     } else if (status == 'ERROR') {
-      this.messageService.add({ key: 'tc', severity: 'error', life: 10000, summary: heading, detail: toastMessage });
+      this.messageService.add({ key: 'tcc', severity: 'error', life: 10000, summary: heading, detail: toastMessage });
     }
   }
   segregateErrors(err: HttpErrorResponse) {

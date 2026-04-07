@@ -45,7 +45,8 @@ export class ExpenseComponent {
 
   constructor(private fb: FormBuilder, private router: Router,
     private confirmationService: ConfirmationService,
-    private environment: EnvironmentService, private expenseapiservice: ExpenseApiService, private messageService: MessageService) { }
+    private environment: EnvironmentService, private expenseapiservice: ExpenseApiService, private messageService: MessageService) {
+  }
 
   ngOnInit() {
     debugger;
@@ -78,16 +79,31 @@ export class ExpenseComponent {
       this.onloaddata();
     }
   }
-
+  expenseheads: any[] = [];
   onloaddata() {
     forkJoin({
-      expense: this.expenseapiservice.getexpenselistData()
+      expense: this.expenseapiservice.getexpenselistData(),
+      expenseheads: this.expenseapiservice.getAllMasterData()
     }).subscribe((res: any) => {
+      debugger;
+      var expensesdata = res.expense;
       this.expenses = res.expense;
+      this.expenseheads = res.expenseheads?.data?.expenseHeadList || [];
+      this.expenses = expensesdata.map((exp: any) => {
+        const expenseheadName = this.getexpenseHeadName(exp?.expenseHeadId);
+        return {
+          ...exp,
+          expenseheadName: expenseheadName
+        };
+      });
+
     });
   }
 
 
+  getexpenseHeadName(id: number) {
+    return this.expenseheads?.find(c => c.masterId == id)?.name || '';
+  }
   isRoleReadOnly() {
     return this.readOnlyRoles.some(ai => this.userRoles.includes(ai));
   }
@@ -125,14 +141,14 @@ export class ExpenseComponent {
     let backPageState: any = { backPageData: this.getCurrentPageState() };
     history.replaceState(backPageState, "", window.location.href);
     let url = this.environment.getConfig('basePath') + "/admin-config/expense/create-expense";
-    this.router.navigate([url], { queryParams: { action: 'edit'}, state: { expenseData: data, backPageData: this.getCurrentPageState() } });
+    this.router.navigate([url], { queryParams: { action: 'edit' }, state: { expenseData: data, backPageData: this.getCurrentPageState() } });
   }
 
   viewContent(data: any) {
     let backPageState: any = { backPageData: this.getCurrentPageState() };
     history.replaceState(backPageState, "", window.location.href);
     let url = this.environment.getConfig('basePath') + "/admin-config/expense/create-expense";
-    this.router.navigate([url], { queryParams: { action: 'view'}, state: { expenseData: data, backPageData: this.getCurrentPageState() } });
+    this.router.navigate([url], { queryParams: { action: 'view' }, state: { expenseData: data, backPageData: this.getCurrentPageState() } });
   }
 
   getCurrentPageState() {

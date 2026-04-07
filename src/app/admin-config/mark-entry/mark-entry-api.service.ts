@@ -24,13 +24,12 @@ export class MarkEntryApiService {
     getexams(): Observable<any> {
         return this.http.get('http://localhost:8082/lrs/api/exams');
     }
-    getStudentsByClassSection(classid: number, sectionid: number) {
+    getmarkEntryStudentData(classid: number, sectionid: number, examId: number, subjectId: number) {
         return this.http.get<any>(
-            `http://localhost:8082/lrs/api/studs/class-section?classId=${classid}&sectionId=${sectionid}`
+            `http://localhost:8082/lrs/api/mark-entry?classId=${classid}&sectionId=${sectionid}&examId=${examId}&subjectId=${subjectId}`
         );
     }
     save(data: any): Observable<any> {
-        return this.http.post('http://localhost:8082/lrs/api/marks', data);
+        return this.http.post('http://localhost:8082/lrs/api/mark-entry', data);
     }
-
 }
